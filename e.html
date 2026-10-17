@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nortbook  - 免费网页在线编辑Excel</title>
+ <link rel="icon" type="image/png" href="https://ys-d.ysepan.com/wap/yangrenhyx/Midl9F9jH7C5b99/xc6gA7Jq4jBfFPab4s3jcge3gD1ke3/%E6%97%A0%E6%A0%87%E9%A2%98.png">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+:root {
+    --primary: #3b4cca;
+    --primary-hover: #2a38a8;
+    --primary-light: #e8e8ff;
+    --primary-border: #c5caf0;
+    --bg: #f5f6f8;
+    --grid-bg: #e8eaed;
+    --paper: #ffffff;
+    --text: #1a202c;
+    --text-secondary: #4a5568;
+    --muted: #718096;
+    --border: #e0e0e0;
+    --hover: #f0f0f5;
+    --danger: #c53030;
+    --success: #2f855a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    font-family: "Segoe UI", -apple-system, "Microsoft YaHei", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    font-size: 14px;
+}
+
+body { display: flex; flex-direction: column; }
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 48px;
+    padding: 0 24px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #fff;
+    flex-shrink: 0;
+}
+
+.logo-text { font-size: 18px; font-weight: 900; color: #3b4cca; }
+
+.nav-links { display: flex; gap: 24px; align-items: center; }
+
+.nav-links a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+
+.nav-links a:hover { opacity: 0.7; }
+
+.main-area {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.sidebar {
+    width: 200px;
+    background: var(--paper);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.sidebar-header {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+}
+
+.sheet-count {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-left: auto;
+}
+
+.sheet-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    min-height: 0;
+}
+
+.sheet-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.12s;
+    font-size: 13px;
+}
+
+.sheet-item:hover { background: var(--hover); }
+.sheet-item.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+
+.sheet-item .sheet-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    border: 1.5px solid currentColor;
+    border-radius: 2px;
+    position: relative;
+}
+
+.sheet-item .sheet-icon::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 2px;
+    right: 2px;
+    height: 1px;
+    background: currentColor;
+    box-shadow: 0 3px 0 currentColor, 0 6px 0 currentColor;
+}
+
+.sheet-item .sheet-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sidebar-footer { padding: 8px; border-top: 1px solid var(--border); flex-shrink: 0; }
+
+.add-sheet-btn {
+    width: 100%;
+    height: 34px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.add-sheet-btn:hover { background: var(--primary-hover); }
+
+.editor-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--grid-bg);
+    min-width: 0;
+    min-height: 0;
+}
+
+.sheet-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    min-height: 44px;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding-right: 8px;
+    margin-right: 4px;
+    border-right: 1px solid var(--border);
+}
+
+.toolbar-group:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+
+.tb-btn {
+    height: 28px;
+    min-width: 28px;
+    padding: 0 8px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.12s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tb-btn:hover { background: var(--hover); color: var(--text); }
+.tb-btn:active { background: var(--primary-light); }
+.tb-btn.danger { color: var(--danger); }
+.tb-btn.danger:hover { background: #fff5f5; }
+
+.tb-select {
+    height: 28px;
+    padding: 0 6px;
+    font-family: inherit;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+}
+
+.tb-color {
+    width: 28px;
+    height: 28px;
+    padding: 2px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    background: #fff;
+}
+
+/* 公式栏 */
+.formula-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.formula-ref {
+    min-width: 60px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary);
+    padding: 4px 10px;
+    background: var(--primary-light);
+    border-radius: 4px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.formula-fx {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--muted);
+    flex-shrink: 0;
+    padding: 0 4px;
+}
+
+.formula-input {
+    flex: 1;
+    height: 28px;
+    padding: 0 10px;
+    font-family: "Consolas", "Monaco", monospace;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--text);
+    outline: none;
+}
+
+.formula-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.grid-wrapper {
+    flex: 1;
+    overflow: auto;
+    background: var(--grid-bg);
+    min-height: 0;
+    padding: 12px;
+    position: relative;
+}
+
+.sheet-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    table-layout: fixed;
+}
+
+.sheet-table th {
+    background: #f0f0f5;
+    border-right: 1px solid #d8d8dc;
+    border-bottom: 1px solid #d8d8dc;
+    font-weight: 600;
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    padding: 0;
+    height: 28px;
+    user-select: none;
+    position: relative;
+}
+
+.sheet-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.sheet-table .row-header {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #f0f0f5;
+    border-right: 1px solid #d8d8dc;
+    border-bottom: 1px solid #d8d8dc;
+    font-weight: 600;
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    width: 42px;
+    min-width: 42px;
+    padding: 0;
+    height: 28px;
+    user-select: none;
+}
+
+.sheet-table .corner {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    background: #e8e8ec;
+    width: 42px;
+    min-width: 42px;
+}
+
+.sheet-table td {
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 4px 8px;
+    min-width: 100px;
+    width: 100px;
+    height: 28px;
+    vertical-align: middle;
+    outline: none;
+    background: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    cursor: cell;
+    position: relative;
+}
+
+.sheet-table td:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--primary);
+    background: #f8f8ff;
+    z-index: 1;
+    overflow: visible;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.sheet-table td.selected {
+    background: #f8f8ff;
+    box-shadow: inset 0 0 0 1px var(--primary-border);
+}
+
+/* 公式单元格标记 */
+.sheet-table td[data-formula="1"] {
+    background: #fafaf0;
+}
+
+.sheet-table td[data-formula="1"]::after {
+    content: 'ƒ';
+    position: absolute;
+    top: 1px;
+    right: 4px;
+    font-size: 9px;
+    color: #a0a050;
+    font-style: italic;
+    font-weight: 700;
+    pointer-events: none;
+}
+
+/* 错误单元格 */
+.sheet-table td[data-error="1"] {
+    color: var(--danger);
+}
+
+.status-bar {
+    height: 36px;
+    padding: 0 16px;
+    background: #fff;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+.status-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+}
+
+.status-save {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.status-dot.saving { background: #d69e2e; }
+.status-dot.error { background: var(--danger); }
+
+.status-info { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.status-cell {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 10px;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.action-buttons { display: flex; gap: 6px; flex-shrink: 0; }
+
+.action-btn {
+    height: 26px;
+    padding: 0 14px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn.primary {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 1px 2px rgba(59, 76, 202, 0.25);
+}
+
+.action-btn.primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+
+.action-btn.secondary {
+    background: #fff;
+    color: var(--text-secondary);
+    border-color: var(--border);
+}
+
+.action-btn.secondary:hover { background: var(--hover); color: var(--text); }
+.action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.hidden-input { display: none; }
+
+/* 预览 */
+.preview-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.preview-overlay.active { display: flex; }
+
+.preview-stage {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    padding: 20px;
+}
+
+.preview-table-wrap {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 8px 48px rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+}
+
+.preview-table-wrap h3 {
+    font-size: 16px;
+    color: var(--primary);
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.preview-table {
+    border-collapse: collapse;
+    font-size: 13px;
+    background: #fff;
+}
+
+.preview-table th {
+    background: #f0f0f5;
+    padding: 6px 10px;
+    border: 1px solid #d8d8dc;
+    font-weight: 600;
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+}
+
+.preview-table td {
+    border: 1px solid #e0e0e0;
+    padding: 6px 10px;
+    min-width: 80px;
+    height: 24px;
+}
+
+.preview-controls {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #fff;
+    font-size: 13px;
+    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.preview-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.preview-btn:hover { background: rgba(255, 255, 255, 0.3); }
+
+.preview-btn.close {
+    background: rgba(230, 57, 70, 0.7);
+    border-color: rgba(230, 57, 70, 0.9);
+    margin-left: 20px;
+}
+
+.preview-btn.close:hover { background: rgba(230, 57, 70, 0.9); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; border: 2px solid var(--grid-bg); }
+::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
+::-webkit-scrollbar-corner { background: var(--grid-bg); }
+
+@media (max-width: 900px) {
+    .navbar { flex-direction: column; height: auto; padding: 8px 12px; gap: 6px; }
+    .logo-text { font-size: 16px; }
+    .nav-links { gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .nav-links a { font-size: 13px; }
+    .sidebar { width: 130px; }
+    .sheet-toolbar { padding: 4px 8px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .toolbar-group { flex-shrink: 0; }
+    .tb-btn { height: 26px; font-size: 11px; padding: 0 6px; }
+    .tb-select { height: 26px; font-size: 11px; }
+    .tb-color { width: 26px; height: 26px; }
+    .grid-wrapper { padding: 6px; }
+    .status-bar { padding: 0 8px; gap: 6px; }
+    .action-btn { height: 24px; padding: 0 10px; font-size: 11px; }
+    .status-info { display: none; }
+    .formula-bar { padding: 4px 8px; gap: 4px; }
+}
+
+@media (max-width: 600px) {
+    .sidebar { width: 110px; }
+    .sidebar-header span:first-child { display: none; }
+    .add-sheet-btn span { display: none; }
+    .sheet-table td { min-width: 80px; width: 80px; }
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+    <span class="logo-text">Nortbook</span>
+    <nav class="nav-links">
+        <a href="#">更多</a>
+        <a href="#">发现</a>
+        <a href="#">关于</a>
+    </nav>
+</header>
+
+<div class="main-area">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span>工作表</span>
+            <span class="sheet-count" id="sheetCount">1</span>
+        </div>
+        <div class="sheet-list" id="sheetList"></div>
+        <div class="sidebar-footer">
+            <button class="add-sheet-btn" id="addSheetBtn">+ <span>添加工作表</span></button>
+        </div>
+    </aside>
+
+    <div class="editor-main">
+        <div class="sheet-toolbar">
+            <div class="toolbar-group">
+                <button class="tb-btn" id="undoBtn" title="撤销 (Ctrl+Z)">↶</button>
+                <button class="tb-btn" id="redoBtn" title="重做 (Ctrl+Y)">↷</button>
+            </div>
+
+            <div class="toolbar-group">
+                <select class="tb-select" id="fontSizeSel" title="字号">
+                    <option value="11px">11</option>
+                    <option value="12px">12</option>
+                    <option value="13px" selected>13</option>
+                    <option value="14px">14</option>
+                    <option value="16px">16</option>
+                    <option value="18px">18</option>
+                    <option value="20px">20</option>
+                    <option value="24px">24</option>
+                    <option value="32px">32</option>
+                </select>
+                <button class="tb-btn" id="boldBtn" title="加粗 (Ctrl+B)"><b>B</b></button>
+                <button class="tb-btn" id="italicBtn" title="斜体 (Ctrl+I)"><i>I</i></button>
+                <button class="tb-btn" id="underlineBtn" title="下划线 (Ctrl+U)"><u>U</u></button>
+                <button class="tb-btn" id="strikeBtn" title="删除线"><s>S</s></button>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="tb-btn" id="alignLeftBtn" title="左对齐">⬅</button>
+                <button class="tb-btn" id="alignCenterBtn" title="居中">⬍</button>
+                <button class="tb-btn" id="alignRightBtn" title="右对齐">➡</button>
+            </div>
+
+            <div class="toolbar-group">
+                <input type="color" class="tb-color" id="textColor" value="#1a202c" title="文字颜色">
+                <input type="color" class="tb-color" id="bgColor" value="#ffffff" title="单元格背景色">
+            </div>
+
+            <div class="toolbar-group">
+                <select class="tb-select" id="functionSel" title="插入函数">
+                    <option value="">函数</option>
+                    <option value="SUM">SUM 求和</option>
+                    <option value="AVERAGE">AVERAGE 平均</option>
+                    <option value="MAX">MAX 最大值</option>
+                    <option value="MIN">MIN 最小值</option>
+                    <option value="COUNT">COUNT 计数</option>
+                    <option value="IF">IF 条件判断</option>
+                    <option value="ROUND">ROUND 四舍五入</option>
+                    <option value="ABS">ABS 绝对值</option>
+                    <option value="SQRT">SQRT 平方根</option>
+                    <option value="POWER">POWER 乘幂</option>
+                    <option value="MOD">MOD 取余</option>
+                    <option value="CONCAT">CONCAT 文本连接</option>
+                    <option value="LEN">LEN 文本长度</option>
+                    <option value="AND">AND 逻辑与</option>
+                    <option value="OR">OR 逻辑或</option>
+                </select>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="tb-btn" id="insertRowBtn" title="在上方插入行">+ 行</button>
+                <button class="tb-btn" id="deleteRowBtn" title="删除当前行">− 行</button>
+                <button class="tb-btn" id="insertColBtn" title="在左侧插入列">+ 列</button>
+                <button class="tb-btn" id="deleteColBtn" title="删除当前列">− 列</button>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="tb-btn" id="renameSheetBtn" title="重命名工作表">重命名</button>
+                <button class="tb-btn" id="duplicateSheetBtn" title="复制工作表">复制</button>
+                <button class="tb-btn danger" id="deleteSheetBtn" title="删除当前工作表">删表</button>
+            </div>
+        </div>
+
+        <!-- 公式栏 -->
+        <div class="formula-bar">
+            <span class="formula-ref" id="formulaRef">—</span>
+            <span class="formula-fx">fx</span>
+            <input type="text" class="formula-input" id="formulaInput" placeholder="选中单元格后输入内容或公式，如 =SUM(A1:A5)" spellcheck="false">
+        </div>
+
+        <div class="grid-wrapper" id="gridWrapper">
+            <table class="sheet-table" id="sheetTable">
+                <thead id="sheetThead"></thead>
+                <tbody id="sheetTbody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer class="status-bar">
+    <div class="status-left">
+        <div class="status-save">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">就绪</span>
+        </div>
+        <span class="status-cell" id="statusCell">A1</span>
+        <span class="status-info" id="statusInfo"></span>
+    </div>
+    <div class="action-buttons">
+        <button class="action-btn secondary" id="importBtn" title="导入 JSON 备份">导入</button>
+        <button class="action-btn secondary" id="previewBtn" title="预览">预览</button>
+        <button class="action-btn primary" id="exportBtn" title="导出为 Excel 文件">导出 Excel</button>
+    </div>
+</footer>
+
+<div class="preview-overlay" id="previewOverlay">
+    <div class="preview-stage" id="previewStage">
+        <div class="preview-table-wrap" id="previewTableWrap"></div>
+    </div>
+    <div class="preview-controls">
+        <span id="previewName">Sheet1</span>
+        <button class="preview-btn close" id="previewClose" title="退出预览">✕</button>
+    </div>
+</div>
+
+<input type="file" id="importInput" accept=".json" class="hidden-input">
+
+<script>
+(function() {
+    'use strict';
+
+    // ==================== 常量 ====================
+    var STORAGE_KEY = 'nortbook_sheet_v1';
+    var MAX_COLS = 26;
+    var MAX_ROWS = 60;
+    var HISTORY_LIMIT = 50;
+
+    // ==================== 状态 ====================
+    var sheets = [];
+    var currentSheetIndex = 0;
+    var activeCellRef = null;
+    var saveTimer = null;
+    var history = [];
+    var redoStack = [];
+    var isRestoring = false;
+
+    // ==================== DOM ====================
+    var $ = function(id) { return document.getElementById(id); };
+    var sheetList = $('sheetList');
+    var sheetCount = $('sheetCount');
+    var sheetTable = $('sheetTable');
+    var sheetThead = $('sheetThead');
+    var sheetTbody = $('sheetTbody');
+    var gridWrapper = $('gridWrapper');
+    var statusText = $('statusText');
+    var statusDot = $('statusDot');
+    var statusCell = $('statusCell');
+    var statusInfo = $('statusInfo');
+    var importInput = $('importInput');
+    var exportBtn = $('exportBtn');
+    var previewOverlay = $('previewOverlay');
+    var previewTableWrap = $('previewTableWrap');
+    var previewName = $('previewName');
+    var formulaRef = $('formulaRef');
+    var formulaInput = $('formulaInput');
+
+    // ==================== 工具函数 ====================
+    function genId() {
+        return 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+    }
+
+    function colLetter(index) {
+        var s = '';
+        var i = index + 1;
+        while (i > 0) {
+            i--;
+            s = String.fromCharCode(65 + (i % 26)) + s;
+            i = Math.floor(i / 26);
+        }
+        return s;
+    }
+
+    function cellRef(col, row) {
+        return colLetter(col) + (row + 1);
+    }
+
+    function parseRef(ref) {
+        var m = ref.match(/^([A-Z]+)(\d+)$/);
+        if (!m) return null;
+        var colStr = m[1];
+        var row = parseInt(m[2], 10) - 1;
+        var col = 0;
+        for (var i = 0; i < colStr.length; i++) {
+            col = col * 26 + (colStr.charCodeAt(i) - 64);
+        }
+        col = col - 1;
+        return { col: col, row: row };
+    }
+
+    // ==================== 公式引擎 ====================
+    var FUNCTIONS = {
+        SUM: function() {
+            var nums = flattenNumArgs(arguments);
+            var s = 0;
+            for (var i = 0; i < nums.length; i++) s += nums[i];
+            return s;
+        },
+        AVERAGE: function() {
+            var nums = flattenNumArgs(arguments);
+            if (nums.length === 0) return 0;
+            var s = 0;
+            for (var i = 0; i < nums.length; i++) s += nums[i];
+            return s / nums.length;
+        },
+        MAX: function() {
+            var nums = flattenNumArgs(arguments);
+            if (nums.length === 0) return 0;
+            return Math.max.apply(Math, nums);
+        },
+        MIN: function() {
+            var nums = flattenNumArgs(arguments);
+            if (nums.length === 0) return 0;
+            return Math.min.apply(Math, nums);
+        },
+        COUNT: function() {
+            return flattenNumArgs(arguments).length;
+        },
+        IF: function(cond, a, b) {
+            var isTrue = false;
+            if (typeof cond === 'boolean') isTrue = cond;
+            else if (typeof cond === 'number') isTrue = cond !== 0;
+            else if (typeof cond === 'string') {
+                if (cond.charAt(0) === '#') isTrue = false;
+                else isTrue = (cond !== '' && cond !== '0' && cond.toLowerCase() !== 'false');
+            }
+            return isTrue ? (a !== undefined ? a : '') : (b !== undefined ? b : '');
+        },
+        ROUND: function(num, digits) {
+            var d = parseInt(digits, 10) || 0;
+            var factor = Math.pow(10, d);
+            return Math.round((parseFloat(num) || 0) * factor) / factor;
+        },
+        ABS: function(num) {
+            return Math.abs(parseFloat(num) || 0);
+        },
+        SQRT: function(num) {
+            var n = parseFloat(num) || 0;
+            return n < 0 ? '#NUM!' : Math.sqrt(n);
+        },
+        POWER: function(base, exp) {
+            return Math.pow(parseFloat(base) || 0, parseFloat(exp) || 0);
+        },
+        MOD: function(a, b) {
+            var bb = parseFloat(b) || 0;
+            if (bb === 0) return '#DIV/0!';
+            return (parseFloat(a) || 0) % bb;
+        },
+        CONCAT: function() {
+            var out = '';
+            for (var i = 0; i < arguments.length; i++) {
+                var a = arguments[i];
+                if (Array.isArray(a)) {
+                    for (var j = 0; j < a.length; j++) out += (a[j] == null ? '' : String(a[j]));
+                } else if (a != null) {
+                    out += String(a);
+                }
+            }
+            return out;
+        },
+        LEN: function(v) {
+            if (v == null) return 0;
+            if (Array.isArray(v)) v = v.join('');
+            return String(v).length;
+        },
+        AND: function() {
+            for (var i = 0; i < arguments.length; i++) {
+                var a = arguments[i];
+                var t = false;
+                if (typeof a === 'boolean') t = a;
+                else if (typeof a === 'number') t = a !== 0;
+                if (!t) return 0;
+            }
+            return 1;
+        },
+        OR: function() {
+            for (var i = 0; i < arguments.length; i++) {
+                var a = arguments[i];
+                var t = false;
+                if (typeof a === 'boolean') t = a;
+                else if (typeof a === 'number') t = a !== 0;
+                if (t) return 1;
+            }
+            return 0;
+        }
+    };
+
+    function flattenNumArgs(args) {
+        var out = [];
+        for (var i = 0; i < args.length; i++) {
+            var a = args[i];
+            if (Array.isArray(a)) {
+                for (var j = 0; j < a.length; j++) {
+                    var n = typeof a[j] === 'number' ? a[j] : parseFloat(a[j]);
+                    if (!isNaN(n)) out.push(n);
+                }
+            } else if (typeof a === 'number') {
+                if (!isNaN(a)) out.push(a);
+            } else if (typeof a === 'string') {
+                var n2 = parseFloat(a);
+                if (!isNaN(n2)) out.push(n2);
+            }
+        }
+        return out;
+    }
+
+    function splitArgs(str) {
+        var args = [];
+        var cur = '';
+        var inStr = false;
+        var strChar = '';
+        for (var i = 0; i < str.length; i++) {
+            var c = str.charAt(i);
+            if (inStr) {
+                cur += c;
+                if (c === strChar) inStr = false;
+            } else if (c === '"' || c === "'") {
+                inStr = true;
+                strChar = c;
+                cur += c;
+            } else if (c === ',') {
+                args.push(cur);
+                cur = '';
+            } else {
+                cur += c;
+            }
+        }
+        if (cur) args.push(cur);
+        return args;
+    }
+
+    function getRangeValues(a, b, sheet, visiting) {
+        var pa = parseRef(a);
+        var pb = parseRef(b);
+        if (!pa || !pb) return [];
+        var minCol = Math.min(pa.col, pb.col);
+        var maxCol = Math.max(pa.col, pb.col);
+        var minRow = Math.min(pa.row, pb.row);
+        var maxRow = Math.max(pa.row, pb.row);
+        var values = [];
+        for (var r = minRow; r <= maxRow; r++) {
+            for (var c = minCol; c <= maxCol; c++) {
+                var ref = cellRef(c, r);
+                values.push(getNumericCellValue(ref, sheet, visiting));
+            }
+        }
+        return values;
+    }
+
+    function getNumericCellValue(ref, sheet, visiting) {
+        if (visiting.has(ref)) return '#CIRC!';
+        var cell = sheet.cells[ref];
+        if (!cell) return 0;
+        if (cell.f) {
+            visiting.add(ref);
+            try {
+                var result = evaluateFormula(cell.f, sheet, visiting);
+                visiting.delete(ref);
+                if (typeof result === 'number') return result;
+                if (typeof result === 'boolean') return result ? 1 : 0;
+                if (typeof result === 'string' && result.charAt(0) === '#') return result;
+                var n = parseFloat(result);
+                return isNaN(n) ? 0 : n;
+            } catch (e) {
+                visiting.delete(ref);
+                return '#ERR!';
+            }
+        }
+        var num = parseFloat(cell.v);
+        return isNaN(num) ? 0 : num;
+    }
+
+    function safeEval(expr) {
+        expr = String(expr).trim();
+        if (!expr) return 0;
+        // 只允许数字、空白、运算符、括号、比较符号
+        if (!/^[\d\s+\-*/().%<>=!&|?:,]*$/.test(expr)) {
+            return '#ERR!';
+        }
+        try {
+            var result = new Function('return (' + expr + ')')();
+            if (typeof result === 'number') {
+                if (!isFinite(result)) return '#DIV/0!';
+                return result;
+            }
+            if (typeof result === 'boolean') return result;
+            return '#ERR!';
+        } catch (e) {
+            return '#ERR!';
+        }
+    }
+
+    function parseFunctionArgs(argsStr, sheet, visiting) {
+        var args = [];
+        if (!argsStr.trim()) return args;
+        var parts = splitArgs(argsStr);
+        for (var i = 0; i < parts.length; i++) {
+            var p = parts[i].trim();
+            if (!p) {
+                args.push('');
+                continue;
+            }
+            // 区域引用
+            var rangeMatch = p.match(/^([A-Z]+\d+)\s*:\s*([A-Z]+\d+)$/);
+            if (rangeMatch) {
+                args.push(getRangeValues(rangeMatch[1], rangeMatch[2], sheet, visiting));
+                continue;
+            }
+            // 单元格引用
+            var cellMatch = p.match(/^([A-Z]+\d+)$/);
+            if (cellMatch) {
+                args.push(getNumericCellValue(cellMatch[1], sheet, visiting));
+                continue;
+            }
+            // 带引号字符串
+            if ((p.charAt(0) === '"' && p.charAt(p.length - 1) === '"') ||
+                (p.charAt(0) === "'" && p.charAt(p.length - 1) === "'")) {
+                args.push(p.slice(1, -1));
+                continue;
+            }
+            // 纯数字
+            if (/^-?\d+(\.\d+)?$/.test(p)) {
+                args.push(parseFloat(p));
+                continue;
+            }
+            // 其他表达式
+            try {
+                var val = evaluateFormula(p, sheet, visiting);
+                args.push(val);
+            } catch (e) {
+                args.push('#ERR!');
+            }
+        }
+        return args;
+    }
+
+    function evaluateFormula(formula, sheet, visiting) {
+        var expr = String(formula).trim();
+        if (!expr) return 0;
+
+        // 迭代替换函数调用（从内层开始）
+        var maxIter = 20;
+        while (maxIter-- > 0) {
+            var before = expr;
+            expr = expr.replace(/([A-Za-z][A-Za-z0-9]*)\s*\(([^()]*)\)/g, function(m, fnName, argsStr) {
+                var fnNameUp = fnName.toUpperCase();
+                if (!FUNCTIONS[fnNameUp]) return m;
+                try {
+                    var args = parseFunctionArgs(argsStr, sheet, visiting);
+                    var result = FUNCTIONS[fnNameUp].apply(null, args);
+                    if (typeof result === 'number' && !isFinite(result)) return '#DIV/0!';
+                    return String(result);
+                } catch (e) {
+                    return '#ERR!';
+                }
+            });
+            if (before === expr) break;
+        }
+
+        // 如果还剩未识别的函数
+        if (/[A-Za-z]/.test(expr.replace(/[A-Z]+\d+/g, ''))) {
+            // 可能有未识别的函数
+            if (/[A-Za-z]+\s*\(/.test(expr)) {
+                return '#NAME?';
+            }
+        }
+
+        // 区域引用（残留）
+        expr = expr.replace(/([A-Z]+\d+)\s*:\s*([A-Z]+\d+)/g, function(m, a, b) {
+            var vals = getRangeValues(a, b, sheet, visiting);
+            return JSON.stringify(vals);
+        });
+
+        // 单元格引用
+        expr = expr.replace(/([A-Z]+\d+)/g, function(m) {
+            var v = getNumericCellValue(m, sheet, visiting);
+            if (typeof v === 'string' && v.charAt(0) === '#') return v;
+            return String(v);
+        });
+
+        // 检查是否有残留的错误标记
+        var errMatch = expr.match(/#[A-Z\/!?]+/);
+        if (errMatch) return errMatch[0];
+
+        return safeEval(expr);
+    }
+
+    // ==================== 数据管理 ====================
+    function createNewSheet(name) {
+        return {
+            id: genId(),
+            name: name || 'Sheet' + (sheets.length + 1),
+            cells: {}
+        };
+    }
+
+    function getCurrentSheet() {
+        return sheets[currentSheetIndex];
+    }
+
+    function loadData() {
+        try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                var data = JSON.parse(raw);
+                if (data && Array.isArray(data.sheets) && data.sheets.length > 0) {
+                    sheets = data.sheets.filter(function(s) {
+                        return s && s.id && typeof s.name === 'string' && s.cells;
+                    });
+                    if (sheets.length > 0) {
+                        currentSheetIndex = Math.min(Math.max(0, data.currentIndex || 0), sheets.length - 1);
+                        return;
+                    }
+                }
+            }
+        } catch (e) { console.warn('读取数据失败', e); }
+
+        sheets = [createNewSheet('Sheet1')];
+        currentSheetIndex = 0;
+    }
+
+    function saveData() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                sheets: sheets,
+                currentIndex: currentSheetIndex
+            }));
+            return true;
+        } catch (e) { return false; }
+    }
+
+    function autoSave() {
+        statusText.textContent = '保存中…';
+        statusDot.className = 'status-dot saving';
+
+        if (saveTimer) clearTimeout(saveTimer);
+        saveTimer = setTimeout(function() {
+            var ok = saveData();
+            if (ok) {
+                statusText.textContent = '已保存';
+                statusDot.className = 'status-dot';
+            } else {
+                statusText.textContent = '保存失败';
+                statusDot.className = 'status-dot error';
+            }
+            updateInfo();
+        }, 400);
+    }
+
+    // ==================== 历史记录 ====================
+    function pushHistory() {
+        if (isRestoring) return;
+        history.push(JSON.stringify({ sheets: sheets, currentIndex: currentSheetIndex }));
+        if (history.length > HISTORY_LIMIT) history.shift();
+        redoStack = [];
+    }
+
+    function undo() {
+        if (history.length === 0) {
+            statusText.textContent = '无可撤销操作';
+            statusDot.className = 'status-dot';
+            return;
+        }
+        redoStack.push(JSON.stringify({ sheets: sheets, currentIndex: currentSheetIndex }));
+        var prev = history.pop();
+        isRestoring = true;
+        var data = JSON.parse(prev);
+        sheets = data.sheets;
+        currentSheetIndex = Math.min(data.currentIndex, sheets.length - 1);
+        isRestoring = false;
+        renderSheetList();
+        renderTable();
+        autoSave();
+        statusText.textContent = '已撤销';
+        statusDot.className = 'status-dot';
+    }
+
+    function redo() {
+        if (redoStack.length === 0) {
+            statusText.textContent = '无可重做操作';
+            statusDot.className = 'status-dot';
+            return;
+        }
+        history.push(JSON.stringify({ sheets: sheets, currentIndex: currentSheetIndex }));
+        var next = redoStack.pop();
+        isRestoring = true;
+        var data = JSON.parse(next);
+        sheets = data.sheets;
+        currentSheetIndex = Math.min(data.currentIndex, sheets.length - 1);
+        isRestoring = false;
+        renderSheetList();
+        renderTable();
+        autoSave();
+        statusText.textContent = '已重做';
+        statusDot.className = 'status-dot';
+    }
+
+    // ==================== 侧栏 ====================
+    function renderSheetList() {
+        sheetList.innerHTML = '';
+        sheets.forEach(function(s, i) {
+            var item = document.createElement('div');
+            item.className = 'sheet-item' + (i === currentSheetIndex ? ' active' : '');
+            item.setAttribute('data-index', i);
+
+            var icon = document.createElement('span');
+            icon.className = 'sheet-icon';
+
+            var name = document.createElement('span');
+            name.className = 'sheet-name';
+            name.textContent = s.name;
+
+            item.appendChild(icon);
+            item.appendChild(name);
+
+            item.addEventListener('click', function() { goToSheet(i); });
+            item.addEventListener('dblclick', function() { renameSheet(i); });
+            sheetList.appendChild(item);
+        });
+
+        sheetCount.textContent = sheets.length;
+        updateInfo();
+    }
+
+    function updateInfo() {
+        var sheet = getCurrentSheet();
+        var cellCount = 0;
+        var formulaCount = 0;
+        if (sheet && sheet.cells) {
+            Object.keys(sheet.cells).forEach(function(ref) {
+                cellCount++;
+                if (sheet.cells[ref].f) formulaCount++;
+            });
+        }
+        statusInfo.textContent = '共 ' + sheets.length + ' 表 · ' + cellCount + ' 单元格 · ' + formulaCount + ' 公式';
+    }
+
+    // ==================== 渲染表格 ====================
+    function renderTable() {
+        var sheet = getCurrentSheet();
+        if (!sheet) return;
+
+        var theadHtml = '<tr><th class="corner"></th>';
+        for (var c = 0; c < MAX_COLS; c++) {
+            theadHtml += '<th data-col="' + c + '">' + colLetter(c) + '</th>';
+        }
+        theadHtml += '</tr>';
+        sheetThead.innerHTML = theadHtml;
+
+        var tbodyHtml = '';
+        for (var r = 0; r < MAX_ROWS; r++) {
+            tbodyHtml += '<tr>';
+            tbodyHtml += '<th class="row-header">' + (r + 1) + '</th>';
+            for (var col = 0; col < MAX_COLS; col++) {
+                var ref = cellRef(col, r);
+                var cell = sheet.cells[ref];
+                var value = cell && cell.v != null ? cell.v : '';
+                var style = cell && cell.s ? cell.s : '';
+                var isFormula = cell && cell.f;
+                var isError = typeof value === 'string' && value.charAt(0) === '#';
+
+                tbodyHtml += '<td contenteditable="true" data-ref="' + ref + '"' +
+                             (isFormula ? ' data-formula="1"' : '') +
+                             (isError ? ' data-error="1"' : '') +
+                             (style ? ' style="' + style + '"' : '') + '>' +
+                             escapeHtml(String(value)) + '</td>';
+            }
+            tbodyHtml += '</tr>';
+        }
+        sheetTbody.innerHTML = tbodyHtml;
+
+        bindCellEvents();
+        updateInfo();
+
+        if (activeCellRef) {
+            var active = sheetTbody.querySelector('td[data-ref="' + activeCellRef + '"]');
+            if (active) {
+                active.classList.add('selected');
+                statusCell.textContent = activeCellRef;
+                formulaRef.textContent = activeCellRef;
+                var cell = sheet.cells[activeCellRef];
+                formulaInput.value = cell && cell.f ? '=' + cell.f : (cell && cell.v ? cell.v : '');
+            }
+        } else {
+            formulaRef.textContent = '—';
+            formulaInput.value = '';
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>"']/g, function(c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
+    function bindCellEvents() {
+        var tds = sheetTbody.querySelectorAll('td');
+        tds.forEach(function(td) {
+            td.addEventListener('focus', function() {
+                var ref = this.getAttribute('data-ref');
+                activeCellRef = ref;
+                statusCell.textContent = ref;
+                formulaRef.textContent = ref;
+
+                sheetTbody.querySelectorAll('td.selected').forEach(function(t) {
+                    t.classList.remove('selected');
+                });
+                this.classList.add('selected');
+
+                // 有公式则显示公式
+                var sheet = getCurrentSheet();
+                var cell = sheet.cells[ref];
+                if (cell && cell.f) {
+                    this.innerText = '=' + cell.f;
+                }
+                formulaInput.value = cell && cell.f ? '=' + cell.f : (cell && cell.v ? cell.v : '');
+            });
+
+            td.addEventListener('blur', function() {
+                saveCell(this);
+                var sheet = getCurrentSheet();
+                var ref = this.getAttribute('data-ref');
+                var cell = sheet.cells[ref];
+                if (cell) {
+                    if (cell.f) {
+                        // 公式单元格显示计算结果
+                        this.innerText = cell.v != null ? String(cell.v) : '';
+                    } else {
+                        this.innerText = cell.v != null ? String(cell.v) : '';
+                    }
+                    var isError = typeof cell.v === 'string' && cell.v.charAt(0) === '#';
+                    this.classList.toggle('selected', false);
+                    if (cell.f) this.setAttribute('data-formula', '1');
+                    else this.removeAttribute('data-formula');
+                    if (isError) this.setAttribute('data-error', '1');
+                    else this.removeAttribute('data-error');
+                }
+            });
+
+            td.addEventListener('input', function() {
+                var el = this;
+                clearTimeout(el._saveTimer);
+                el._saveTimer = setTimeout(function() {
+                    saveCell(el);
+                }, 300);
+            });
+
+            td.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    moveActiveCell(0, 1);
+                } else if (e.key === 'Tab' && !e.shiftKey) {
+                    e.preventDefault();
+                    moveActiveCell(1, 0);
+                } else if (e.key === 'Tab' && e.shiftKey) {
+                    e.preventDefault();
+                    moveActiveCell(-1, 0);
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    this.blur();
+                }
+            });
+        });
+    }
+
+    function moveActiveCell(dx, dy) {
+        if (!activeCellRef) return;
+        var pos = parseRef(activeCellRef);
+        if (!pos) return;
+        var newCol = Math.max(0, Math.min(MAX_COLS - 1, pos.col + dx));
+        var newRow = Math.max(0, Math.min(MAX_ROWS - 1, pos.row + dy));
+        var newRef = cellRef(newCol, newRow);
+        var target = sheetTbody.querySelector('td[data-ref="' + newRef + '"]');
+        if (target) target.focus();
+    }
+
+    // ==================== 单元格保存 ====================
+    function saveCell(td) {
+        var ref = td.getAttribute('data-ref');
+        var sheet = getCurrentSheet();
+        if (!sheet) return;
+
+        var raw = td.innerText.trim();
+        var style = td.getAttribute('style') || '';
+
+        // 判断是否是公式
+        if (raw.charAt(0) === '=' && raw.length > 1) {
+            var formula = raw.slice(1);
+            if (!sheet.cells[ref]) sheet.cells[ref] = {};
+            sheet.cells[ref].f = formula;
+
+            // 求值
+            var visiting = new Set();
+            visiting.add(ref);
+            try {
+                var result = evaluateFormula(formula, sheet, visiting);
+                if (typeof result === 'boolean') result = result ? 1 : 0;
+                sheet.cells[ref].v = String(result);
+            } catch (e) {
+                sheet.cells[ref].v = '#ERR!';
+            }
+
+            if (style) sheet.cells[ref].s = style;
+            else delete sheet.cells[ref].s;
+
+            td.setAttribute('data-formula', '1');
+            if (typeof sheet.cells[ref].v === 'string' && sheet.cells[ref].v.charAt(0) === '#') {
+                td.setAttribute('data-error', '1');
+            } else {
+                td.removeAttribute('data-error');
+            }
+
+            // 重算依赖它的公式
+            recalcAllFormulas();
+        } else {
+            // 普通文本
+            if (!raw && !style) {
+                delete sheet.cells[ref];
+            } else {
+                if (!sheet.cells[ref]) sheet.cells[ref] = {};
+                sheet.cells[ref].v = raw;
+                delete sheet.cells[ref].f;
+                if (style) sheet.cells[ref].s = style;
+                else delete sheet.cells[ref].s;
+            }
+            td.removeAttribute('data-formula');
+            td.removeAttribute('data-error');
+
+            // 重算依赖它的公式
+            recalcAllFormulas();
+        }
+
+        autoSave();
+        updateInfo();
+    }
+
+    // 全局重算所有公式
+    function recalcAllFormulas() {
+        var sheet = getCurrentSheet();
+        if (!sheet) return;
+
+        Object.keys(sheet.cells).forEach(function(ref) {
+            var cell = sheet.cells[ref];
+            if (!cell.f) return;
+
+            var visiting = new Set();
+            visiting.add(ref);
+            try {
+                var result = evaluateFormula(cell.f, sheet, visiting);
+                if (typeof result === 'boolean') result = result ? 1 : 0;
+                cell.v = String(result);
+            } catch (e) {
+                cell.v = '#ERR!';
+            }
+
+            // 更新 td 显示（除非正在编辑该单元格）
+            var td = sheetTbody.querySelector('td[data-ref="' + ref + '"]');
+            if (td && document.activeElement !== td) {
+                td.innerText = cell.v;
+                if (typeof cell.v === 'string' && cell.v.charAt(0) === '#') {
+                    td.setAttribute('data-error', '1');
+                } else {
+                    td.removeAttribute('data-error');
+                }
+            }
+        });
+    }
+
+    // 公式栏输入
+    formulaInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            applyFormulaInput();
+        } else if (e.key === 'Escape') {
+            this.blur();
+        }
+    });
+
+    formulaInput.addEventListener('blur', function() {
+        applyFormulaInput();
+    });
+
+    function applyFormulaInput() {
+        if (!activeCellRef) return;
+        var td = sheetTbody.querySelector('td[data-ref="' + activeCellRef + '"]');
+        if (!td) return;
+        var newVal = formulaInput.value;
+        td.innerText = newVal;
+        saveCell(td);
+        if (document.activeElement !== td) {
+            var sheet = getCurrentSheet();
+            var cell = sheet.cells[activeCellRef];
+            if (cell) {
+                td.innerText = cell.v != null ? String(cell.v) : '';
+            }
+        }
+    }
+
+    // ==================== 工作表操作 ====================
+    function goToSheet(index) {
+        if (index === currentSheetIndex) return;
+        if (activeCellRef) {
+            var active = sheetTbody.querySelector('td[data-ref="' + activeCellRef + '"]');
+            if (active) saveCell(active);
+        }
+        currentSheetIndex = index;
+        activeCellRef = null;
+        statusCell.textContent = '—';
+        formulaRef.textContent = '—';
+        formulaInput.value = '';
+        renderSheetList();
+        renderTable();
+        saveData();
+    }
+
+    function addSheet() {
+        pushHistory();
+        var newSheet = createNewSheet();
+        sheets.push(newSheet);
+        currentSheetIndex = sheets.length - 1;
+        activeCellRef = null;
+        statusCell.textContent = '—';
+        saveData();
+        renderSheetList();
+        renderTable();
+        statusText.textContent = '已添加工作表：' + newSheet.name;
+        statusDot.className = 'status-dot';
+    }
+
+    function deleteSheet() {
+        if (sheets.length <= 1) { alert('至少需要保留一个工作表'); return; }
+        var sheet = getCurrentSheet();
+        if (!confirm('确定要删除工作表「' + sheet.name + '」吗？\n此操作不可恢复。')) return;
+
+        pushHistory();
+        sheets.splice(currentSheetIndex, 1);
+        if (currentSheetIndex >= sheets.length) currentSheetIndex = sheets.length - 1;
+        activeCellRef = null;
+        statusCell.textContent = '—';
+        saveData();
+        renderSheetList();
+        renderTable();
+        statusText.textContent = '已删除工作表';
+        statusDot.className = 'status-dot';
+    }
+
+    function duplicateSheet() {
+        pushHistory();
+        var sheet = getCurrentSheet();
+        var copy = {
+            id: genId(),
+            name: sheet.name + ' 副本',
+            cells: JSON.parse(JSON.stringify(sheet.cells))
+        };
+        sheets.splice(currentSheetIndex + 1, 0, copy);
+        currentSheetIndex++;
+        activeCellRef = null;
+        statusCell.textContent = '—';
+        saveData();
+        renderSheetList();
+        renderTable();
+        statusText.textContent = '已复制工作表';
+        statusDot.className = 'status-dot';
+    }
+
+    function renameSheet(index) {
+        var sheet = sheets[index];
+        if (!sheet) return;
+        var newName = prompt('输入新的工作表名称：', sheet.name);
+        if (newName === null) return;
+        newName = newName.trim();
+        if (!newName) { alert('名称不能为空'); return; }
+        pushHistory();
+        sheet.name = newName;
+        saveData();
+        renderSheetList();
+        updateInfo();
+        statusText.textContent = '已重命名';
+        statusDot.className = 'status-dot';
+    }
+
+    // ==================== 行/列操作 ====================
+    function insertRow() {
+        if (!activeCellRef) { alert('请先选中一个单元格'); return; }
+        var pos = parseRef(activeCellRef);
+        if (!pos) return;
+        pushHistory();
+        var sheet = getCurrentSheet();
+        var newCells = {};
+
+        Object.keys(sheet.cells).forEach(function(ref) {
+            var p = parseRef(ref);
+            if (!p) return;
+            var cell = sheet.cells[ref];
+            if (p.row >= pos.row) {
+                if (p.row + 1 < MAX_ROWS) {
+                    newCells[cellRef(p.col, p.row + 1)] = cell;
+                }
+            } else {
+                newCells[ref] = cell;
+            }
+        });
+
+        sheet.cells = newCells;
+        saveData();
+        renderTable();
+        recalcAllFormulas();
+        statusText.textContent = '已插入行';
+        statusDot.className = 'status-dot';
+    }
+
+    function deleteRow() {
+        if (!activeCellRef) { alert('请先选中一个单元格'); return; }
+        var pos = parseRef(activeCellRef);
+        if (!pos) return;
+        pushHistory();
+        var sheet = getCurrentSheet();
+        var newCells = {};
+
+        Object.keys(sheet.cells).forEach(function(ref) {
+            var p = parseRef(ref);
+            if (!p) return;
+            var cell = sheet.cells[ref];
+            if (p.row === pos.row) return;
+            if (p.row > pos.row) {
+                newCells[cellRef(p.col, p.row - 1)] = cell;
+            } else {
+                newCells[ref] = cell;
+            }
+        });
+
+        sheet.cells = newCells;
+        saveData();
+        renderTable();
+        recalcAllFormulas();
+        statusText.textContent = '已删除行';
+        statusDot.className = 'status-dot';
+    }
+
+    function insertCol() {
+        if (!activeCellRef) { alert('请先选中一个单元格'); return; }
+        var pos = parseRef(activeCellRef);
+        if (!pos) return;
+        pushHistory();
+        var sheet = getCurrentSheet();
+        var newCells = {};
+
+        Object.keys(sheet.cells).forEach(function(ref) {
+            var p = parseRef(ref);
+            if (!p) return;
+            var cell = sheet.cells[ref];
+            if (p.col >= pos.col) {
+                if (p.col + 1 < MAX_COLS) {
+                    newCells[cellRef(p.col + 1, p.row)] = cell;
+                }
+            } else {
+                newCells[ref] = cell;
+            }
+        });
+
+        sheet.cells = newCells;
+        saveData();
+        renderTable();
+        recalcAllFormulas();
+        statusText.textContent = '已插入列';
+        statusDot.className = 'status-dot';
+    }
+
+    function deleteCol() {
+        if (!activeCellRef) { alert('请先选中一个单元格'); return; }
+        var pos = parseRef(activeCellRef);
+        if (!pos) return;
+        pushHistory();
+        var sheet = getCurrentSheet();
+        var newCells = {};
+
+        Object.keys(sheet.cells).forEach(function(ref) {
+            var p = parseRef(ref);
+            if (!p) return;
+            var cell = sheet.cells[ref];
+            if (p.col === pos.col) return;
+            if (p.col > pos.col) {
+                newCells[cellRef(p.col - 1, p.row)] = cell;
+            } else {
+                newCells[ref] = cell;
+            }
+        });
+
+        sheet.cells = newCells;
+        saveData();
+        renderTable();
+        recalcAllFormulas();
+        statusText.textContent = '已删除列';
+        statusDot.className = 'status-dot';
+    }
+
+    // ==================== 格式 ====================
+    function applyToActiveCell(prop, value) {
+        if (!activeCellRef) {
+            statusText.textContent = '请先选中一个单元格';
+            statusDot.className = 'status-dot';
+            return;
+        }
+        var td = sheetTbody.querySelector('td[data-ref="' + activeCellRef + '"]');
+        if (!td) return;
+
+        pushHistory();
+
+        if (prop === 'font-weight') {
+            var cur = td.style.fontWeight;
+            td.style.fontWeight = (cur === 'bold' || cur === '700') ? 'normal' : 'bold';
+        } else if (prop === 'font-style') {
+            var cur2 = td.style.fontStyle;
+            td.style.fontStyle = (cur2 === 'italic') ? 'normal' : 'italic';
+        } else if (prop === 'text-decoration') {
+            var cur3 = td.style.textDecoration;
+            if (cur3.indexOf('underline') !== -1) {
+                td.style.textDecoration = cur3.replace('underline', '').trim();
+            } else {
+                td.style.textDecoration = (cur3 + ' underline').trim();
+            }
+        } else if (prop === 'line-through') {
+            var cur4 = td.style.textDecoration;
+            if (cur4.indexOf('line-through') !== -1) {
+                td.style.textDecoration = cur4.replace('line-through', '').trim();
+            } else {
+                td.style.textDecoration = (cur4 + ' line-through').trim();
+            }
+        } else {
+            td.style[prop] = value;
+        }
+
+        saveCell(td);
+        td.focus();
+    }
+
+    // ==================== 插入函数 ====================
+    var FUNCTION_DEFAULTS = {
+        SUM: 'A1:A5',
+        AVERAGE: 'A1:A5',
+        MAX: 'A1:A5',
+        MIN: 'A1:A5',
+        COUNT: 'A1:A5',
+        IF: 'A1>0,1,0',
+        ROUND: 'A1,0',
+        ABS: 'A1',
+        SQRT: 'A1',
+        POWER: 'A1,2',
+        MOD: 'A1,2',
+        CONCAT: 'A1,B1',
+        LEN: 'A1',
+        AND: 'A1,B1',
+        OR: 'A1,B1'
+    };
+
+    $('functionSel').addEventListener('change', function() {
+        var fn = this.value;
+        this.value = '';
+        if (!fn) return;
+
+        if (!activeCellRef) {
+            alert('请先选中一个单元格');
+            return;
+        }
+
+        var args = prompt('输入 ' + fn + ' 的参数（逗号分隔）：', FUNCTION_DEFAULTS[fn] || '');
+        if (args === null) return;
+
+        var td = sheetTbody.querySelector('td[data-ref="' + activeCellRef + '"]');
+        if (!td) return;
+
+        pushHistory();
+        var formula = fn + '(' + args + ')';
+        td.innerText = '=' + formula;
+        saveCell(td);
+        // 失焦显示结果
+        td.blur();
+        td.innerText = '';
+        setTimeout(function() {
+            var sheet = getCurrentSheet();
+            var cell = sheet.cells[activeCellRef];
+            if (cell) td.innerText = cell.v != null ? String(cell.v) : '';
+            td.setAttribute('data-formula', '1');
+            formulaInput.value = '=' + formula;
+        }, 50);
+    });
+
+    // ==================== 导出 XLSX ====================
+    function exportXlsx() {
+        if (typeof XLSX === 'undefined') {
+            alert('XLSX 库未加载，请检查网络');
+            return;
+        }
+        if (activeCellRef) {
+            var active = sheetTbody.querySelector('td[data-ref="' + activeCellRef + '"]');
+            if (active) saveCell(active);
+        }
+
+        statusText.textContent = '正在生成 Excel…';
+        statusDot.className = 'status-dot saving';
+
+        try {
+            var wb = XLSX.utils.book_new();
+
+            sheets.forEach(function(sheet) {
+                var maxRow = 0;
+                var maxCol = 0;
+                Object.keys(sheet.cells).forEach(function(ref) {
+                    var p = parseRef(ref);
+                    if (!p) return;
+                    if (p.row > maxRow) maxRow = p.row;
+                    if (p.col > maxCol) maxCol = p.col;
+                });
+
+                var data = [];
+                for (var r = 0; r <= maxRow; r++) {
+                    var row = [];
+                    for (var c = 0; c <= maxCol; c++) {
+                        var ref = cellRef(c, r);
+                        var cell = sheet.cells[ref];
+                        row.push(cell && cell.v != null ? cell.v : '');
+                    }
+                    data.push(row);
+                }
+
+                if (data.length === 0) data = [['']];
+
+                var ws = XLSX.utils.aoa_to_sheet(data);
+
+                Object.keys(sheet.cells).forEach(function(ref) {
+                    var cell = sheet.cells[ref];
+                    if (!cell.s) return;
+                    if (!ws[ref]) ws[ref] = { t: 's', v: cell.v || '' };
+                    ws[ref].s = {};
+                    var styleStr = cell.s;
+                    if (styleStr.indexOf('font-weight') !== -1) {
+                        ws[ref].s.font = ws[ref].s.font || {};
+                        ws[ref].s.font.bold = true;
+                    }
+                    if (styleStr.indexOf('font-style') !== -1) {
+                        ws[ref].s.font = ws[ref].s.font || {};
+                        ws[ref].s.font.italic = true;
+                    }
+                    if (styleStr.indexOf('underline') !== -1) {
+                        ws[ref].s.font = ws[ref].s.font || {};
+                        ws[ref].s.font.underline = true;
+                    }
+                    var alignMatch = styleStr.match(/text-align:\s*(\w+)/);
+                    if (alignMatch) {
+                        ws[ref].s.alignment = ws[ref].s.alignment || {};
+                        ws[ref].s.alignment.horizontal = alignMatch[1];
+                    }
+                });
+
+                XLSX.utils.book_append_sheet(wb, ws, sheet.name);
+            });
+
+            XLSX.writeFile(wb, 'Nortbook_Sheet.xlsx');
+            statusText.textContent = '✓ 已导出 Excel';
+            statusDot.className = 'status-dot';
+        } catch (err) {
+            console.error('导出失败', err);
+            alert('导出失败：' + err.message);
+            statusText.textContent = '导出失败';
+            statusDot.className = 'status-dot error';
+        }
+    }
+
+    // ==================== 预览 ====================
+    function openPreview() {
+        if (activeCellRef) {
+            var active = sheetTbody.querySelector('td[data-ref="' + activeCellRef + '"]');
+            if (active) saveCell(active);
+        }
+
+        var sheet = getCurrentSheet();
+        if (!sheet) return;
+        previewName.textContent = sheet.name;
+
+        var maxRow = 0;
+        var maxCol = 0;
+        Object.keys(sheet.cells).forEach(function(ref) {
+            var p = parseRef(ref);
+            if (!p) return;
+            if (p.row > maxRow) maxRow = p.row;
+            if (p.col > maxCol) maxCol = p.col;
+        });
+
+        var html = '<h3>' + escapeHtml(sheet.name) + '</h3><table class="preview-table"><thead><tr><th></th>';
+        for (var c = 0; c <= maxCol; c++) {
+            html += '<th>' + colLetter(c) + '</th>';
+        }
+        html += '</tr></thead><tbody>';
+
+        for (var r = 0; r <= maxRow; r++) {
+            html += '<tr><th>' + (r + 1) + '</th>';
+            for (var col = 0; col <= maxCol; col++) {
+                var ref = cellRef(col, r);
+                var cell = sheet.cells[ref];
+                var v = cell && cell.v != null ? cell.v : '';
+                var s = cell && cell.s ? cell.s : '';
+                html += '<td' + (s ? ' style="' + s + '"' : '') + '>' + escapeHtml(String(v)) + '</td>';
+            }
+            html += '</tr>';
+        }
+        html += '</tbody></table>';
+
+        previewTableWrap.innerHTML = html;
+        previewOverlay.classList.add('active');
+    }
+
+    function closePreview() {
+        previewOverlay.classList.remove('active');
+    }
+
+    // ==================== 导入 JSON ====================
+    function importJson(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+            try {
+                var data = JSON.parse(ev.target.result);
+                var importedSheets = null;
+                if (data && Array.isArray(data.sheets)) importedSheets = data.sheets;
+                else if (Array.isArray(data)) importedSheets = data;
+
+                if (!importedSheets || importedSheets.length === 0) { alert('备份文件格式不正确'); return; }
+
+                var valid = importedSheets.filter(function(s) {
+                    return s && s.id && typeof s.name === 'string' && s.cells;
+                });
+
+                if (valid.length === 0) { alert('备份中未找到有效的工作表'); return; }
+                if (!confirm('找到 ' + valid.length + ' 个工作表。\n点击「确定」将覆盖现有内容，点击「取消」返回。')) return;
+
+                pushHistory();
+                sheets = valid;
+                currentSheetIndex = 0;
+                activeCellRef = null;
+                statusCell.textContent = '—';
+                saveData();
+                renderSheetList();
+                renderTable();
+                statusText.textContent = '已导入 ' + valid.length + ' 个工作表';
+                statusDot.className = 'status-dot';
+            } catch (err) {
+                alert('导入失败：' + err.message);
+            }
+        };
+        reader.readAsText(file);
+        importInput.value = '';
+    }
+
+    // ==================== 事件绑定 ====================
+    $('undoBtn').addEventListener('click', undo);
+    $('redoBtn').addEventListener('click', redo);
+
+    $('boldBtn').addEventListener('click', function() { applyToActiveCell('font-weight'); });
+    $('italicBtn').addEventListener('click', function() { applyToActiveCell('font-style'); });
+    $('underlineBtn').addEventListener('click', function() { applyToActiveCell('text-decoration'); });
+    $('strikeBtn').addEventListener('click', function() { applyToActiveCell('line-through'); });
+
+    $('alignLeftBtn').addEventListener('click', function() { applyToActiveCell('textAlign', 'left'); });
+    $('alignCenterBtn').addEventListener('click', function() { applyToActiveCell('textAlign', 'center'); });
+    $('alignRightBtn').addEventListener('click', function() { applyToActiveCell('textAlign', 'right'); });
+
+    $('fontSizeSel').addEventListener('change', function() { applyToActiveCell('fontSize', this.value); });
+    $('textColor').addEventListener('input', function() { applyToActiveCell('color', this.value); });
+    $('bgColor').addEventListener('input', function() { applyToActiveCell('backgroundColor', this.value); });
+
+    $('insertRowBtn').addEventListener('click', insertRow);
+    $('deleteRowBtn').addEventListener('click', deleteRow);
+    $('insertColBtn').addEventListener('click', insertCol);
+    $('deleteColBtn').addEventListener('click', deleteCol);
+
+    $('renameSheetBtn').addEventListener('click', function() { renameSheet(currentSheetIndex); });
+    $('duplicateSheetBtn').addEventListener('click', duplicateSheet);
+    $('deleteSheetBtn').addEventListener('click', deleteSheet);
+
+    $('addSheetBtn').addEventListener('click', addSheet);
+
+    exportBtn.addEventListener('click', exportXlsx);
+    $('previewBtn').addEventListener('click', openPreview);
+    $('previewClose').addEventListener('click', closePreview);
+    $('importBtn').addEventListener('click', function() { importInput.click(); });
+    importInput.addEventListener('change', importJson);
+
+    previewOverlay.addEventListener('click', function(e) {
+        if (e.target === previewOverlay) closePreview();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (previewOverlay.classList.contains('active')) {
+            if (e.key === 'Escape') { e.preventDefault(); closePreview(); }
+            return;
+        }
+
+        if (e.ctrlKey || e.metaKey) {
+            if (e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo(); }
+            if (e.key === 'y' || (e.key === 'z' && e.shiftKey)) { e.preventDefault(); redo(); }
+            if (e.key === 's') { e.preventDefault(); exportXlsx(); }
+            if (e.key === 'b') { e.preventDefault(); applyToActiveCell('font-weight'); }
+            if (e.key === 'i') { e.preventDefault(); applyToActiveCell('font-style'); }
+            if (e.key === 'u') { e.preventDefault(); applyToActiveCell('text-decoration'); }
+        }
+    });
+
+    window.addEventListener('beforeunload', function() {
+        if (activeCellRef) {
+            var active = sheetTbody.querySelector('td[data-ref="' + activeCellRef + '"]');
+            if (active) saveCell(active);
+        }
+        saveData();
+    });
+
+    // ==================== 初始化 ====================
+    function init() {
+        loadData();
+        renderSheetList();
+        renderTable();
+    }
+
+    init();
+})();
+</script>
+</body>
+</html>
