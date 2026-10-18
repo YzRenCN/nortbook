@@ -3,8 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nortbook  - 免费网页在线编辑Excel</title>
- <link rel="icon" type="image/png" href="https://ys-d.ysepan.com/wap/yangrenhyx/Midl9F9jH7C5b99/xc6gA7Jq4jBfFPab4s3jcge3gD1ke3/%E6%97%A0%E6%A0%87%E9%A2%98.png">
+<title>在线表格编辑器 · 免费在线编辑 Excel、导出 xlsx - Nortbook</title>
+<meta name="description" content="Nortbook 免费在线表格编辑器，像 Excel 一样在线编辑表格：支持 SUM/AVERAGE/IF/ROUND 等 15+ 函数、单元格与区域引用、公式嵌套自动重算、多工作表管理，可导入 JSON 备份、导出标准 .xlsx 文件。数据保存在浏览器本地，无需注册。">
+<meta name="keywords" content="在线表格,在线Excel,免费表格编辑,在线电子表格,xlsx导出,表格函数,SUM函数,在线工作表">
+<link rel="canonical" href="https://nortbook.nor.asia/e">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nortbook">
+<meta property="og:title" content="在线表格编辑器 · 免费在线编辑 Excel、导出 xlsx">
+<meta property="og:description" content="15+ 函数、区域引用、多工作表、导出 .xlsx，浏览器本地运行，无需注册。">
+<meta property="og:url" content="https://nortbook.nor.asia/e">
+<meta property="og:locale" content="zh_CN">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在线表格编辑器 · 免费在线编辑 Excel">
+<meta name="twitter:description" content="在线编辑表格，15+ 函数、多工作表、导出 xlsx，本地运行免费使用。">
+
+<link rel="icon" type="image/png" href="https://ys-d.ysepan.com/wap/yangrenhyx/Midl9F9jH7C5b99/xc6gA7Jq4jBfFPab4s3jcge3gD1ke3/%E6%97%A0%E6%A0%87%E9%A2%98.png">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 :root {
@@ -644,17 +662,83 @@ body { display: flex; flex-direction: column; }
     .sheet-table td { min-width: 80px; width: 80px; }
 }
 </style>
+
+<!-- 结构化数据：WebApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Nortbook 在线表格编辑器",
+  "url": "https://nortbook.nor.asia/e",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Any (Web Browser)",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "zh-CN",
+  "description": "免费在线表格编辑器，像 Excel 一样在线编辑表格，支持 15+ 函数、单元格与区域引用、公式嵌套自动重算、多工作表管理，可导出标准 .xlsx 文件。",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+  "featureList": [
+    "支持 SUM、AVERAGE、MAX、MIN、COUNT、IF、ROUND、ABS、SQRT、POWER、MOD、CONCAT、LEN、AND、OR 等 15+ 函数",
+    "单元格引用（A1、B2）与区域引用（A1:A10）",
+    "公式嵌套自动重算，检测循环依赖",
+    "多工作表管理，可新增、复制、重命名、删除",
+    "单元格字体、字号、颜色、对齐、加粗斜体下划线格式",
+    "行/列插入与删除",
+    "撤销与重做",
+    "导入 JSON 备份，导出标准 .xlsx 文件",
+    "数据保存在浏览器本地，不上传服务器"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "NorStudio",
+    "url": "https://nor.asia"
+  }
+}
+</script>
+
+<!-- 结构化数据：FAQ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "这个在线表格编辑器支持哪些函数？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "支持 SUM、AVERAGE、MAX、MIN、COUNT、IF、ROUND、ABS、SQRT、POWER、MOD、CONCAT、LEN、AND、OR 等 15+ 常用函数，并支持单元格引用（A1）与区域引用（A1:A10）。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "编辑的表格可以导出为 Excel 文件吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。点击底部「导出 Excel」按钮，即可将当前所有工作表导出为标准 .xlsx 文件，字体、加粗、斜体、下划线、对齐等格式会尽量保留。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "表格数据保存在哪里？会上传到服务器吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "所有数据保存在您的浏览器本地（localStorage），不上传服务器，刷新页面或关闭浏览器后再次打开内容依然保留。"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
 <header class="navbar">
     <span class="logo-text">Nortbook</span>
-    <nav class="nav-links">
-       <a href="https://nortbook.nor.asia/w">Word文档</a>
-      <a href="https://nortbook.nor.asia/e">表格</a>
-      <a href="https://nortbook.nor.asia/p">演示文稿</a>
-      <a href="https://nortbook.nor.asia/">返回</a>
-      <a href="https://nortbook.nor.asia/a">关于</a>
+    <nav class="nav-links" aria-label="主导航">
+       <a href="https://nortbook.nor.asia/w" title="Nortbook Word 文档" aria-label="Nortbook Word 文档">Word文档</a>
+      <a href="https://nortbook.nor.asia/e" title="Nortbook 表格" aria-label="Nortbook 表格">表格</a>
+      <a href="https://nortbook.nor.asia/p" title="Nortbook 演示文稿" aria-label="Nortbook 演示文稿">演示文稿</a>
+      <a href="https://nortbook.nor.asia/" title="返回 Nortbook 首页" aria-label="返回 Nortbook 首页">返回</a>
+      <a href="https://nortbook.nor.asia/a" title="关于 Nortbook" aria-label="关于 Nortbook">关于</a>
     </nav>
 </header>
 
@@ -664,21 +748,21 @@ body { display: flex; flex-direction: column; }
             <span>工作表</span>
             <span class="sheet-count" id="sheetCount">1</span>
         </div>
-        <div class="sheet-list" id="sheetList"></div>
+        <div class="sheet-list" id="sheetList" aria-label="工作表列表"></div>
         <div class="sidebar-footer">
-            <button class="add-sheet-btn" id="addSheetBtn">+ <span>添加工作表</span></button>
+            <button class="add-sheet-btn" id="addSheetBtn" aria-label="添加工作表">+ <span>添加工作表</span></button>
         </div>
     </aside>
 
     <div class="editor-main">
-        <div class="sheet-toolbar">
+        <div class="sheet-toolbar" role="toolbar" aria-label="表格格式工具栏">
             <div class="toolbar-group">
-                <button class="tb-btn" id="undoBtn" title="撤销 (Ctrl+Z)">↶</button>
-                <button class="tb-btn" id="redoBtn" title="重做 (Ctrl+Y)">↷</button>
+                <button class="tb-btn" id="undoBtn" title="撤销 (Ctrl+Z)" aria-label="撤销">↶</button>
+                <button class="tb-btn" id="redoBtn" title="重做 (Ctrl+Y)" aria-label="重做">↷</button>
             </div>
 
             <div class="toolbar-group">
-                <select class="tb-select" id="fontSizeSel" title="字号">
+                <select class="tb-select" id="fontSizeSel" title="字号" aria-label="字号">
                     <option value="11px">11</option>
                     <option value="12px">12</option>
                     <option value="13px" selected>13</option>
@@ -689,25 +773,25 @@ body { display: flex; flex-direction: column; }
                     <option value="24px">24</option>
                     <option value="32px">32</option>
                 </select>
-                <button class="tb-btn" id="boldBtn" title="加粗 (Ctrl+B)"><b>B</b></button>
-                <button class="tb-btn" id="italicBtn" title="斜体 (Ctrl+I)"><i>I</i></button>
-                <button class="tb-btn" id="underlineBtn" title="下划线 (Ctrl+U)"><u>U</u></button>
-                <button class="tb-btn" id="strikeBtn" title="删除线"><s>S</s></button>
+                <button class="tb-btn" id="boldBtn" title="加粗 (Ctrl+B)" aria-label="加粗"><b>B</b></button>
+                <button class="tb-btn" id="italicBtn" title="斜体 (Ctrl+I)" aria-label="斜体"><i>I</i></button>
+                <button class="tb-btn" id="underlineBtn" title="下划线 (Ctrl+U)" aria-label="下划线"><u>U</u></button>
+                <button class="tb-btn" id="strikeBtn" title="删除线" aria-label="删除线"><s>S</s></button>
             </div>
 
             <div class="toolbar-group">
-                <button class="tb-btn" id="alignLeftBtn" title="左对齐">⬅</button>
-                <button class="tb-btn" id="alignCenterBtn" title="居中">⬍</button>
-                <button class="tb-btn" id="alignRightBtn" title="右对齐">➡</button>
+                <button class="tb-btn" id="alignLeftBtn" title="左对齐" aria-label="左对齐">⬅</button>
+                <button class="tb-btn" id="alignCenterBtn" title="居中" aria-label="居中">⬍</button>
+                <button class="tb-btn" id="alignRightBtn" title="右对齐" aria-label="右对齐">➡</button>
             </div>
 
             <div class="toolbar-group">
-                <input type="color" class="tb-color" id="textColor" value="#1a202c" title="文字颜色">
-                <input type="color" class="tb-color" id="bgColor" value="#ffffff" title="单元格背景色">
+                <input type="color" class="tb-color" id="textColor" value="#1a202c" title="文字颜色" aria-label="文字颜色">
+                <input type="color" class="tb-color" id="bgColor" value="#ffffff" title="单元格背景色" aria-label="单元格背景色">
             </div>
 
             <div class="toolbar-group">
-                <select class="tb-select" id="functionSel" title="插入函数">
+                <select class="tb-select" id="functionSel" title="插入函数" aria-label="插入函数">
                     <option value="">函数</option>
                     <option value="SUM">SUM 求和</option>
                     <option value="AVERAGE">AVERAGE 平均</option>
@@ -728,28 +812,28 @@ body { display: flex; flex-direction: column; }
             </div>
 
             <div class="toolbar-group">
-                <button class="tb-btn" id="insertRowBtn" title="在上方插入行">+ 行</button>
-                <button class="tb-btn" id="deleteRowBtn" title="删除当前行">− 行</button>
-                <button class="tb-btn" id="insertColBtn" title="在左侧插入列">+ 列</button>
-                <button class="tb-btn" id="deleteColBtn" title="删除当前列">− 列</button>
+                <button class="tb-btn" id="insertRowBtn" title="在上方插入行" aria-label="在上方插入行">+ 行</button>
+                <button class="tb-btn" id="deleteRowBtn" title="删除当前行" aria-label="删除当前行">− 行</button>
+                <button class="tb-btn" id="insertColBtn" title="在左侧插入列" aria-label="在左侧插入列">+ 列</button>
+                <button class="tb-btn" id="deleteColBtn" title="删除当前列" aria-label="删除当前列">− 列</button>
             </div>
 
             <div class="toolbar-group">
-                <button class="tb-btn" id="renameSheetBtn" title="重命名工作表">重命名</button>
-                <button class="tb-btn" id="duplicateSheetBtn" title="复制工作表">复制</button>
-                <button class="tb-btn danger" id="deleteSheetBtn" title="删除当前工作表">删表</button>
+                <button class="tb-btn" id="renameSheetBtn" title="重命名工作表" aria-label="重命名工作表">重命名</button>
+                <button class="tb-btn" id="duplicateSheetBtn" title="复制工作表" aria-label="复制工作表">复制</button>
+                <button class="tb-btn danger" id="deleteSheetBtn" title="删除当前工作表" aria-label="删除当前工作表">删表</button>
             </div>
         </div>
 
         <!-- 公式栏 -->
         <div class="formula-bar">
-            <span class="formula-ref" id="formulaRef">—</span>
-            <span class="formula-fx">fx</span>
-            <input type="text" class="formula-input" id="formulaInput" placeholder="选中单元格后输入内容或公式，如 =SUM(A1:A5)" spellcheck="false">
+            <span class="formula-ref" id="formulaRef" aria-live="polite">—</span>
+            <span class="formula-fx" aria-hidden="true">fx</span>
+            <input type="text" class="formula-input" id="formulaInput" placeholder="选中单元格后输入内容或公式，如 =SUM(A1:A5)" spellcheck="false" aria-label="公式输入栏">
         </div>
 
         <div class="grid-wrapper" id="gridWrapper">
-            <table class="sheet-table" id="sheetTable">
+            <table class="sheet-table" id="sheetTable" aria-label="表格编辑区">
                 <thead id="sheetThead"></thead>
                 <tbody id="sheetTbody"></tbody>
             </table>
@@ -760,30 +844,30 @@ body { display: flex; flex-direction: column; }
 <footer class="status-bar">
     <div class="status-left">
         <div class="status-save">
-            <span class="status-dot" id="statusDot"></span>
-            <span id="statusText">就绪</span>
+            <span class="status-dot" id="statusDot" aria-hidden="true"></span>
+            <span id="statusText" aria-live="polite">就绪</span>
         </div>
         <span class="status-cell" id="statusCell">A1</span>
         <span class="status-info" id="statusInfo"></span>
     </div>
     <div class="action-buttons">
-        <button class="action-btn secondary" id="importBtn" title="导入 JSON 备份">导入</button>
-        <button class="action-btn secondary" id="previewBtn" title="预览">预览</button>
-        <button class="action-btn primary" id="exportBtn" title="导出为 Excel 文件">导出 Excel</button>
+        <button class="action-btn secondary" id="importBtn" title="导入 JSON 备份" aria-label="导入 JSON 备份">导入</button>
+        <button class="action-btn secondary" id="previewBtn" title="预览" aria-label="预览当前工作表">预览</button>
+        <button class="action-btn primary" id="exportBtn" title="导出为 Excel 文件" aria-label="导出为 Excel 文件">导出 Excel</button>
     </div>
 </footer>
 
-<div class="preview-overlay" id="previewOverlay">
+<div class="preview-overlay" id="previewOverlay" role="dialog" aria-label="工作表预览" aria-modal="true">
     <div class="preview-stage" id="previewStage">
         <div class="preview-table-wrap" id="previewTableWrap"></div>
     </div>
     <div class="preview-controls">
         <span id="previewName">Sheet1</span>
-        <button class="preview-btn close" id="previewClose" title="退出预览">✕</button>
+        <button class="preview-btn close" id="previewClose" title="退出预览" aria-label="退出预览">✕</button>
     </div>
 </div>
 
-<input type="file" id="importInput" accept=".json" class="hidden-input">
+<input type="file" id="importInput" accept=".json" class="hidden-input" aria-label="选择 JSON 备份文件">
 
 <script>
 (function() {
