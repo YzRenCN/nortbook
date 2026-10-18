@@ -1,746 +1,2119 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nortbook Word - 免费网页在线编辑word文档</title>
-    <link rel="icon" type="image/png" href="https://ys-d.ysepan.com/wap/yangrenhyx/Midl9F9jH7C5b99/xc6gA7Jq4jBfFPab4s3jcge3gD1ke3/%E6%97%A0%E6%A0%87%E9%A2%98.png">
-    <script src="https://cdn.jsdelivr.net/npm/html-docx-js/dist/html-docx.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif; }
-        body { display: flex; flex-direction: column; background: #f3f3f3; overflow: hidden; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>在线演示文稿编辑器 · 免费在线做 PPT、导出 pptx - Nortbook</title>
+<meta name="description" content="Nortbook 免费在线演示文稿编辑器：16:9 标准幻灯片，支持标题页/标题+内容/仅标题/空白四种版式预设，可插入文本框、图片、矩形圆形箭头、表格与列表，字体、字号、颜色、对齐全套格式工具，全屏预览键盘翻页，一键导出标准 .pptx 文件。数据保存在浏览器本地。">
+<meta name="keywords" content="在线PPT,在线演示文稿,免费做PPT,在线幻灯片,幻灯片编辑,pptx导出,在线做幻灯片,演示文稿制作">
+<link rel="canonical" href="https://nortbook.nor.asia/p">
+<meta name="robots" content="index, follow, max-image-preview:large">
 
-        .navbar { display: flex; justify-content: space-between; align-items: center; height: 48px; padding: 0 24px; border-bottom: 1px solid #e0e0e0; background: #fff; flex-shrink: 0; }
-        .logo-text { font-size: 18px; font-weight: 900; color: #3b4cca; }
-        .nav-links { display: flex; gap: 24px; }
-        .nav-links a { text-decoration: none; font-size: 14px; font-weight: 600; color: #333; }
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nortbook">
+<meta property="og:title" content="在线演示文稿编辑器 · 免费在线做 PPT、导出 pptx">
+<meta property="og:description" content="16:9 幻灯片、四种版式预设、文本框图片形状、全屏预览、导出 .pptx，浏览器本地运行。">
+<meta property="og:url" content="https://nortbook.nor.asia/p">
+<meta property="og:locale" content="zh_CN">
 
-        .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 4px 12px; background: #fff; border-bottom: 1px solid #e0e0e0; flex-shrink: 0; min-height: 36px; position: relative; z-index: 50; }
-        .toolbar-group { display: flex; align-items: center; gap: 2px; padding-right: 8px; margin-right: 4px; border-right: 1px solid #e0e0e0; position: relative; }
-        .toolbar-group:last-child { border-right: none; }
-        .toolbar button, .toolbar select { height: 28px; padding: 0 8px; font-size: 12px; font-family: inherit; border: 1px solid transparent; border-radius: 4px; background: transparent; cursor: pointer; color: #333; display: flex; align-items: center; justify-content: center; transition: background 0.15s; white-space: nowrap; }
-        .toolbar button:hover, .toolbar select:hover { background: #f0f0f0; }
-        .toolbar button.active { background: #d0d0ff; }
-        .toolbar select { border: 1px solid #ccc; background: #fff; }
-        .toolbar input[type="color"] { width: 28px; height: 28px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; padding: 0; background: #fff; }
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在线演示文稿编辑器 · 免费在线做 PPT">
+<meta name="twitter:description" content="在线编辑 16:9 幻灯片，四种版式、富文本、插入图片形状，导出 pptx，本地运行免费使用。">
 
-        .btn-primary { background-color: #3b4cca !important; color: #ffffff !important; border: none !important; font-weight: 600; padding: 0 12px !important; border-radius: 4px; }
-        .btn-primary:hover { background-color: #2a38a8 !important; }
+<link rel="icon" type="image/png" href="https://ys-d.ysepan.com/wap/yangrenhyx/Midl9F9jH7C5b99/xc6gA7Jq4jBfFPab4s3jcge3gD1ke3/%E6%97%A0%E6%A0%87%E9%A2%98.png">
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+:root {
+    --primary: #3b4cca;
+    --primary-hover: #2a38a8;
+    --primary-light: #e8e8ff;
+    --primary-border: #c5caf0;
+    --bg: #f5f6f8;
+    --canvas-bg: #e8eaed;
+    --paper: #ffffff;
+    --text: #1a202c;
+    --text-secondary: #4a5568;
+    --muted: #718096;
+    --border: #e0e0e0;
+    --hover: #f0f0f5;
+    --danger: #c53030;
+    --success: #2f855a;
+}
 
-        .dropdown-arrow { font-size: 10px; margin-left: 3px; opacity: 0.7; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .dropdown-panel { display: none; position: absolute; top: 34px; left: 0; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); padding: 8px; z-index: 100; min-width: 240px; }
-        .dropdown-panel.show { display: block; }
-        .dropdown-panel .panel-title { font-size: 11px; color: #888; margin-bottom: 6px; font-weight: 600; }
-        .panel-list { display: flex; flex-direction: column; gap: 2px; }
-        .panel-list button { padding: 8px 12px; font-size: 13px; text-align: left; border: none; background: transparent; border-radius: 4px; cursor: pointer; color: #333; display: flex; align-items: center; gap: 10px; }
-        .panel-list button:hover { background: #f0f0f0; }
+html, body {
+    height: 100%;
+    font-family: "Segoe UI", -apple-system, "Microsoft YaHei", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    font-size: 14px;
+}
 
-        .shape-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
-        .shape-grid button { width: 32px; height: 32px; padding: 0; font-size: 16px; background: #fafafa; border: 1px solid #e0e0e0; border-radius: 4px; cursor: pointer; }
-        .shape-grid button:hover { background: #d0d0ff; }
+body { display: flex; flex-direction: column; }
 
-        .zoom-controls { display: flex; align-items: center; gap: 2px; }
-        .zoom-controls button { padding: 0 8px; height: 28px; font-size: 12px; background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer; color: #333; }
-        .zoom-controls button:hover { background: #f0f0f0; }
-        .zoom-controls .zoom-display { font-size: 12px; width: 44px; text-align: center; color: #666; user-select: none; }
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 48px;
+    padding: 0 24px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #fff;
+    flex-shrink: 0;
+}
 
-        .editor-wrapper { flex: 1; min-height: 0; overflow: auto; padding: 20px; background: #e8eaed; display: flex; justify-content: center; align-items: flex-start; }
+.logo-text { font-size: 18px; font-weight: 900; color: #3b4cca; }
 
-        .pages-container { display: flex; flex-direction: column; align-items: center; gap: 20px; transform-origin: top center; transition: transform 0.2s ease; }
+.nav-links { display: flex; gap: 24px; align-items: center; }
 
-        .editor-page {
-            width: 794px;
-            height: 1123px;
-            background: #fff;
-            padding: 60px 70px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-            outline: none;
-            font-size: 15px;
-            line-height: 1.8;
-            color: #222;
-            position: relative;
-            overflow: hidden;
-            flex-shrink: 0;
-            box-sizing: border-box;
-        }
+.nav-links a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
 
-        .editor-page table { border-collapse: collapse; width: 100%; margin: 10px 0; }
-        .editor-page table td { border: 1px solid #ccc; padding: 8px; min-width: 40px; }
-        .editor-page hr { border: none; border-top: 2px solid #ccc; margin: 16px 0; }
+.nav-links a:hover { opacity: 0.7; }
 
-        .editor-page h1 { font-size: 32px; font-weight: 800; margin: 18px 0 10px; line-height: 1.3; }
-        .editor-page h2 { font-size: 26px; font-weight: 700; margin: 16px 0 8px; line-height: 1.3; }
-        .editor-page h3 { font-size: 22px; font-weight: 700; margin: 14px 0 6px; line-height: 1.3; }
-        .editor-page h4 { font-size: 18px; font-weight: 700; margin: 12px 0 6px; line-height: 1.3; }
-        .editor-page p { margin: 6px 0; }
+.main-area {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    min-height: 0;
+}
 
-        .text-box { display: inline-block; border: 1px solid #999; padding: 8px 12px; min-width: 120px; min-height: 40px; background: #fafafa; position: relative; margin: 6px 0; border-radius: 2px; }
-        .content-block { border: 1px solid #ccc; padding: 12px 16px; margin: 10px 0; background: #f9f9fc; border-radius: 4px; border-left: 4px solid #3b4cca; }
-        .shape-rect { display: inline-block; width: 100px; height: 60px; border: 2px solid #3b4cca; background: #f0f0ff; margin: 6px; vertical-align: middle; }
-        .shape-circle { display: inline-block; width: 80px; height: 80px; border-radius: 50%; border: 2px solid #3b4cca; background: #f0f0ff; margin: 6px; vertical-align: middle; }
-        .shape-arrow { display: inline-block; width: 100px; height: 40px; border: 2px solid #3b4cca; background: #f0f0ff; clip-path: polygon(0 30%, 70% 30%, 70% 0, 100% 50%, 70% 100%, 70% 70%, 0 70%); margin: 6px; }
-        .page-break { border-top: 3px dashed #ccc; margin: 24px 0; position: relative; }
-        .tab-stop { display: inline-block; border-bottom: 1px dotted #999; }
+/* 侧栏 */
+.sidebar {
+    width: 220px;
+    background: var(--paper);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow: hidden;
+}
 
-        .status-bar { height: 28px; padding: 0 16px; background: #fff; border-top: 1px solid #e0e0e0; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: #888; flex-shrink: 0; }
+.sidebar-header {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+}
 
-        @media (max-width: 768px) {
-            .navbar { flex-direction: column; height: auto; padding: 8px 12px; gap: 6px; }
-            .logo-text { font-size: 16px; }
-            .nav-links { gap: 16px; }
-            .nav-links a { font-size: 13px; }
+.slide-count {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-left: auto;
+}
 
-            .toolbar { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 3px 8px; }
-            .toolbar-group { padding-right: 4px; margin-right: 2px; flex-shrink: 0; }
-            .toolbar button, .toolbar select { height: 26px; font-size: 11px; padding: 0 6px; }
+.slide-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    min-height: 0;
+}
 
-            .editor-wrapper { padding: 8px; }
-            .zoom-controls { display: none; }
-            .pages-container { transform: none !important; width: 100%; max-width: 100%; gap: 12px; }
+.slide-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
 
-            .editor-page {
-                width: 100%;
-                max-width: 100%;
-                height: auto;
-                min-height: auto;
-                padding: 20px 16px;
-                overflow: visible;
-            }
+.slide-thumb:hover { border-color: var(--primary-border); box-shadow: 0 2px 8px rgba(59, 76, 202, 0.15); }
+.slide-thumb.active { border-color: var(--primary); }
 
-            .editor-page h1 { font-size: 24px; }
-            .editor-page h2 { font-size: 20px; }
-            .editor-page h3 { font-size: 18px; }
-            .editor-page h4 { font-size: 16px; }
-            .editor-page p { margin: 4px 0; }
+.slide-thumb-inner {
+    position: absolute;
+    top: 0; left: 0;
+    width: 960px; height: 540px;
+    padding: 40px;
+    transform-origin: top left;
+    pointer-events: none;
+    overflow: hidden;
+    font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #1a202c;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
 
-            .status-bar { font-size: 10px; padding: 3px 8px; }
-        }
-    </style>
+.slide-thumb-inner h1 { font-size: 40px; font-weight: 800; margin: 8px 0 16px; line-height: 1.3; }
+.slide-thumb-inner h2 { font-size: 32px; font-weight: 700; margin: 6px 0 12px; line-height: 1.3; }
+.slide-thumb-inner h3 { font-size: 24px; font-weight: 700; margin: 4px 0 8px; line-height: 1.3; }
+.slide-thumb-inner p { margin: 6px 0; }
+.slide-thumb-inner img { max-width: 100%; height: auto; }
+.slide-thumb-inner table { max-width: 100%; border-collapse: collapse; table-layout: fixed; }
+.slide-thumb-inner .img-resizer { display: none !important; }
+.slide-thumb-inner .img-wrap { outline: none !important; }
+
+.slide-thumb-num {
+    position: absolute;
+    bottom: 4px; right: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1px 5px;
+    border-radius: 3px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.sidebar-footer { padding: 8px; border-top: 1px solid var(--border); flex-shrink: 0; }
+
+.add-slide-btn {
+    width: 100%;
+    height: 34px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.add-slide-btn:hover { background: var(--primary-hover); }
+
+/* 编辑主区 */
+.editor-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--canvas-bg);
+    min-width: 0;
+    min-height: 0;
+}
+
+.slide-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    min-height: 44px;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding-right: 8px;
+    margin-right: 4px;
+    border-right: 1px solid var(--border);
+}
+
+.toolbar-group:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+
+.tb-btn {
+    height: 28px;
+    min-width: 28px;
+    padding: 0 8px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.12s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tb-btn:hover { background: var(--hover); color: var(--text); }
+.tb-btn:active { background: var(--primary-light); }
+.tb-btn.danger { color: var(--danger); }
+.tb-btn.danger:hover { background: #fff5f5; }
+
+.tb-select {
+    height: 28px;
+    padding: 0 6px;
+    font-family: inherit;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+}
+
+.tb-color {
+    width: 28px;
+    height: 28px;
+    padding: 2px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    background: #fff;
+}
+
+.canvas-wrapper {
+    flex: 1;
+    overflow: hidden;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+    position: relative;
+}
+
+.canvas-scale-outer {
+    position: relative;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+    transition: width 0.15s, height 0.15s;
+    overflow: visible;
+}
+
+.slide-canvas {
+    width: 960px;
+    height: 540px;
+    transform-origin: top left;
+    padding: 40px;
+    background: #fff;
+    outline: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #1a202c;
+    font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    position: absolute;
+    top: 0; left: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.slide-canvas::-webkit-scrollbar { width: 8px; }
+.slide-canvas::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 4px; }
+
+.slide-canvas:empty::before {
+    content: attr(data-placeholder);
+    color: #a0aec0;
+    pointer-events: none;
+    display: block;
+}
+
+.slide-canvas h1 { font-size: 40px; font-weight: 800; margin: 8px 0 16px; line-height: 1.3; }
+.slide-canvas h2 { font-size: 32px; font-weight: 700; margin: 6px 0 12px; line-height: 1.3; }
+.slide-canvas h3 { font-size: 24px; font-weight: 700; margin: 4px 0 8px; line-height: 1.3; }
+.slide-canvas p { margin: 6px 0; }
+.slide-canvas ul, .slide-canvas ol { padding-left: 28px; margin: 8px 0; }
+.slide-canvas li { margin: 4px 0; }
+
+/* 图片 */
+.slide-canvas .img-wrap {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    vertical-align: middle;
+    margin: 4px;
+    box-sizing: border-box;
+}
+
+.slide-canvas .img-wrap img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.slide-canvas .img-wrap.selected {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+.slide-canvas .img-resizer {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: var(--primary);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    bottom: -7px;
+    right: -7px;
+    cursor: nwse-resize;
+    display: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+    z-index: 10;
+    touch-action: none;
+}
+
+.slide-canvas .img-wrap.selected .img-resizer {
+    display: block;
+}
+
+/* ⭐ 文本框 */
+.slide-canvas .text-box-wrap {
+    position: absolute;
+    min-width: 120px;
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px dashed rgba(59, 76, 202, 0.35);
+    box-sizing: border-box;
+    cursor: move;
+    user-select: none;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.slide-canvas .text-box-wrap.selected {
+    border: 2px solid var(--primary);
+    padding: 7px 11px;
+    z-index: 3;
+}
+
+.slide-canvas .text-box-inner {
+    width: 100%;
+    min-height: 22px;
+    outline: none;
+    cursor: move;
+    font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #1a202c;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    box-sizing: border-box;
+}
+
+.slide-canvas .text-box-wrap.selected .text-box-inner {
+    cursor: text;
+}
+
+.slide-canvas .text-box-resizer {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: var(--primary);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    bottom: -7px;
+    right: -7px;
+    cursor: nwse-resize;
+    display: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+    z-index: 10;
+    touch-action: none;
+}
+
+.slide-canvas .text-box-wrap.selected .text-box-resizer {
+    display: block;
+}
+
+/* 只读模式：缩略图/预览/导出时隐藏辅助元素 */
+.readonly-mode .text-box-wrap {
+    border-color: transparent !important;
+    background: transparent !important;
+    padding: 8px 12px !important;
+}
+
+.readonly-mode .text-box-resizer {
+    display: none !important;
+}
+
+.readonly-mode .text-box-inner {
+    cursor: default !important;
+}
+
+.readonly-mode .img-resizer {
+    display: none !important;
+}
+
+.readonly-mode .img-wrap {
+    outline: none !important;
+}
+
+/* 通用表格等 */
+.slide-canvas table {
+    max-width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: 8px 0;
+}
+
+.slide-canvas table td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.slide-canvas hr { border: none; border-top: 1px solid #cbd5e0; margin: 12px 0; }
+
+.slide-canvas pre, .slide-canvas code {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.slide-canvas .shape-rect {
+    display: inline-block;
+    width: 120px; height: 80px;
+    border: 2px solid #3b4cca;
+    background: rgba(59, 76, 202, 0.1);
+    border-radius: 4px;
+    vertical-align: middle;
+    margin: 4px;
+}
+
+.slide-canvas .shape-circle {
+    display: inline-block;
+    width: 100px; height: 100px;
+    border: 2px solid #3b4cca;
+    background: rgba(59, 76, 202, 0.1);
+    border-radius: 50%;
+    vertical-align: middle;
+    margin: 4px;
+}
+
+.slide-canvas .shape-arrow {
+    display: inline-block;
+    width: 120px; height: 50px;
+    border: 2px solid #3b4cca;
+    background: rgba(59, 76, 202, 0.1);
+    clip-path: polygon(0 30%, 70% 30%, 70% 0, 100% 50%, 70% 100%, 70% 70%, 0 70%);
+    vertical-align: middle;
+    margin: 4px;
+}
+
+/* 图片/文本框浮动控制栏 */
+.img-toolbar {
+    position: fixed;
+    background: #1a202c;
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px;
+    display: flex;
+    gap: 2px;
+    z-index: 2000;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    font-size: 12px;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.img-toolbar button {
+    background: transparent;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: background 0.12s;
+}
+
+.img-toolbar button:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.img-toolbar button.danger {
+    color: #ff6b6b;
+}
+
+.img-toolbar button.danger:hover {
+    background: rgba(255, 107, 107, 0.2);
+}
+
+.zoom-badge {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+    pointer-events: none;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.overflow-warning {
+    display: none;
+    background: rgba(214, 158, 46, 0.9);
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.overflow-warning.show { display: inline-block; }
+
+.status-bar {
+    height: 36px;
+    padding: 0 16px;
+    background: #fff;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+.status-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+}
+
+.status-save {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.status-dot.saving { background: #d69e2e; }
+.status-dot.error { background: var(--danger); }
+
+.status-info { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.action-buttons { display: flex; gap: 6px; flex-shrink: 0; }
+
+.action-btn {
+    height: 26px;
+    padding: 0 14px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn.primary {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 1px 2px rgba(59, 76, 202, 0.25);
+}
+
+.action-btn.primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+
+.action-btn.secondary {
+    background: #fff;
+    color: var(--text-secondary);
+    border-color: var(--border);
+}
+
+.action-btn.secondary:hover { background: var(--hover); color: var(--text); }
+.action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.hidden-input { display: none; }
+
+/* 预览 */
+.preview-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.preview-overlay.active { display: flex; }
+
+.preview-stage {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    padding: 20px;
+}
+
+.preview-slide {
+    background: #fff;
+    box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
+    transform-origin: center center;
+    overflow: hidden;
+    font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    position: relative;
+}
+
+.preview-slide-inner {
+    width: 960px; height: 540px;
+    padding: 40px;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #1a202c;
+    position: absolute;
+    top: 0; left: 0;
+    transform-origin: top left;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.preview-slide-inner h1 { font-size: 40px; font-weight: 800; margin: 8px 0 16px; line-height: 1.3; }
+.preview-slide-inner h2 { font-size: 32px; font-weight: 700; margin: 6px 0 12px; line-height: 1.3; }
+.preview-slide-inner h3 { font-size: 24px; font-weight: 700; margin: 4px 0 8px; line-height: 1.3; }
+.preview-slide-inner p { margin: 6px 0; }
+.preview-slide-inner img { max-width: 100%; height: auto; }
+.preview-slide-inner ul, .preview-slide-inner ol { padding-left: 28px; margin: 8px 0; }
+.preview-slide-inner table { max-width: 100%; border-collapse: collapse; table-layout: fixed; }
+.preview-slide-inner pre, .preview-slide-inner code { white-space: pre-wrap; word-wrap: break-word; }
+
+.preview-controls {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #fff;
+    font-size: 13px;
+    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.preview-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.preview-btn:hover { background: rgba(255, 255, 255, 0.3); }
+
+.preview-btn.close {
+    background: rgba(230, 57, 70, 0.7);
+    border-color: rgba(230, 57, 70, 0.9);
+    margin-left: 20px;
+}
+
+.preview-btn.close:hover { background: rgba(230, 57, 70, 0.9); }
+
+.preview-page-info {
+    min-width: 80px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
+
+@media (max-width: 900px) {
+    .navbar { flex-direction: column; height: auto; padding: 8px 12px; gap: 6px; }
+    .logo-text { font-size: 16px; }
+    .nav-links { gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .nav-links a { font-size: 13px; }
+    .sidebar { width: 150px; }
+    .slide-toolbar { padding: 4px 8px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .toolbar-group { flex-shrink: 0; }
+    .tb-btn { height: 26px; font-size: 11px; padding: 0 6px; }
+    .tb-select { height: 26px; font-size: 11px; }
+    .tb-color { width: 26px; height: 26px; }
+    .canvas-wrapper { padding: 12px; }
+    .status-bar { padding: 0 8px; gap: 6px; }
+    .action-btn { height: 24px; padding: 0 10px; font-size: 11px; }
+    .status-info { display: none; }
+}
+
+@media (max-width: 600px) {
+    .sidebar { width: 120px; }
+    .sidebar-header span:first-child { display: none; }
+    .slide-thumb-num { font-size: 9px; }
+    .add-slide-btn span { display: none; }
+}
+</style>
+
+<!-- 结构化数据：WebApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Nortbook 在线演示文稿编辑器",
+  "url": "https://nortbook.nor.asia/p",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Any (Web Browser)",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "zh-CN",
+  "description": "免费在线演示文稿编辑器，16:9 标准幻灯片，支持四种版式预设、文本框、图片、形状、表格、列表，全套字体格式工具，全屏预览键盘翻页，一键导出标准 .pptx 文件。",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+  "featureList": [
+    "16:9 标准幻灯片比例",
+    "四种版式预设：标题页、标题+内容、仅标题、空白",
+    "可插入文本框，自由拖拽移动与缩放",
+    "可插入图片并调整尺寸、置顶、适应宽度",
+    "可插入矩形、圆形、箭头、水平线等形状",
+    "字体、字号、文字颜色、背景色、加粗斜体下划线删除线",
+    "左对齐、居中、右对齐、两端对齐",
+    "项目符号与编号列表",
+    "缩略图侧栏，支持添加、复制、删除、上移下移幻灯片",
+    "全屏预览模式，键盘左右键翻页",
+    "导出标准 .pptx 文件",
+    "数据保存在浏览器本地，不上传服务器"
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "NorStudio",
+    "url": "https://nor.asia"
+  }
+}
+</script>
+
+<!-- 结构化数据：FAQ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "这个在线演示文稿编辑器支持哪些功能？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "支持 16:9 标准幻灯片，提供标题页、标题+内容、仅标题、空白四种版式预设，可插入文本框、图片、矩形圆形箭头等形状，设置字体字号颜色对齐与列表，支持全屏预览与键盘翻页，可导出标准 .pptx 文件。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "做好的幻灯片可以导出为 PowerPoint 文件吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。点击底部「导出 PPTX」按钮，工具会将每页幻灯片渲染为图片并打包为标准 .pptx 文件，每页内容原样保留。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "幻灯片数据保存在哪里？会上传到服务器吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "所有内容保存在您的浏览器本地（localStorage），不上传服务器，刷新或关闭浏览器后再次打开内容依然保留。"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
-    <header class="navbar">
-        <span class="logo-text">Nortbook</span>
-        <nav class="nav-links">
-            <a href="https://nortbook.nor.asia/nortbook">NT速记</a>
-            <a href="https://nortbook.nor.asia/e">表格</a>
-            <a href="https://nortbook.nor.asia/p">演示文稿</a>
-            <a href="https://nortbook.nor.asia/">返回</a>
-            <a href="https://nortbook.nor.asia/a">关于</a>
-        </nav>
-    </header>
+<header class="navbar">
+    <a href="https://nortbook.nor.asia/p" class="logo-text" style="text-decoration:none" aria-label="Nortbook 演示文稿首页">Nortbook</a>
+    <nav class="nav-links" aria-label="主导航">
+        <a href="https://nortbook.nor.asia/nortbook" title="Nortbook 速记与日记" aria-label="Nortbook 速记与日记">NT速记</a>
+        <a href="https://nortbook.nor.asia/w" title="Nortbook Word 文档" aria-label="Nortbook Word 文档">Word文档</a>
+        <a href="https://nortbook.nor.asia/e" title="Nortbook 表格" aria-label="Nortbook 表格">表格</a>
+        <a href="https://nortbook.nor.asia/" title="返回 Nortbook 首页" aria-label="返回 Nortbook 首页">返回</a>
+        <a href="https://nortbook.nor.asia/a" title="关于 Nortbook" aria-label="关于 Nortbook">关于</a>
+    </nav>
+</header>
 
-    <div class="toolbar" id="toolbar">
-        <div class="toolbar-group">
-            <button id="importBtn" class="btn-primary" title="导入 .docx">导入</button>
-            <button id="saveBtn" class="btn-primary" title="下载为 .docx">保存</button>
+<div class="main-area">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span>幻灯片</span>
+            <span class="slide-count" id="slideCount" aria-label="幻灯片数量">1</span>
         </div>
-
-        <div class="toolbar-group">
-            <button id="undoBtn" title="撤销 (Ctrl+Z)">撤销</button>
-            <button id="redoBtn" title="重做 (Ctrl+Y)">重做</button>
-            <button id="clearFormat" title="清除格式">清除格式</button>
+        <div class="slide-list" id="slideList" aria-label="幻灯片列表"></div>
+        <div class="sidebar-footer">
+            <button class="add-slide-btn" id="addSlideBtn" aria-label="添加幻灯片">+ <span>添加幻灯片</span></button>
         </div>
+    </aside>
 
-        <div class="toolbar-group">
-            <select id="fontFamily" title="字体">
-                <option value="Segoe UI">Segoe UI</option>
-                <option value="Microsoft YaHei">微软雅黑</option>
-                <option value="SimSun">宋体</option>
-                <option value="SimHei">黑体</option>
-                <option value="KaiTi">楷体</option>
-                <option value="Arial">Arial</option>
-                <option value="Times New Roman">Times New Roman</option>
-            </select>
-            <select id="fontSize" title="字号">
-                <option value="12px">12</option>
-                <option value="14px">14</option>
-                <option value="15px" selected>15</option>
-                <option value="16px">16</option>
-                <option value="18px">18</option>
-                <option value="20px">20</option>
-                <option value="24px">24</option>
-                <option value="28px">28</option>
-                <option value="36px">36</option>
-            </select>
-        </div>
+    <div class="editor-main">
+        <div class="slide-toolbar" role="toolbar" aria-label="幻灯片格式工具栏">
+            <div class="toolbar-group">
+                <button class="tb-btn" id="undoBtn" title="撤销 (Ctrl+Z)" aria-label="撤销">↶</button>
+                <button class="tb-btn" id="redoBtn" title="重做 (Ctrl+Y)" aria-label="重做">↷</button>
+            </div>
 
-        <div class="toolbar-group">
-            <button id="boldBtn" title="加粗 (Ctrl+B)"><b>B</b></button>
-            <button id="italicBtn" title="斜体 (Ctrl+I)"><i>I</i></button>
-            <button id="underlineBtn" title="下划线 (Ctrl+U)"><u>U</u></button>
-            <button id="strikeBtn" title="删除线"><s>S</s></button>
-        </div>
+            <div class="toolbar-group">
+                <select class="tb-select" id="layoutSel" title="幻灯片版式" aria-label="幻灯片版式">
+                    <option value="">版式</option>
+                    <option value="title">标题页</option>
+                    <option value="title-content">标题+内容</option>
+                    <option value="title-only">仅标题</option>
+                    <option value="blank">空白</option>
+                </select>
+            </div>
 
-        <div class="toolbar-group">
-            <input type="color" id="textColor" value="#000000" title="字体颜色">
-            <input type="color" id="bgColor" value="#ffff00" title="背景高亮">
-            <select id="styleSelect" title="段落样式">
-                <option value="p">正文</option>
-                <option value="h1">标题 1</option>
-                <option value="h2">标题 2</option>
-                <option value="h3">标题 3</option>
-                <option value="h4">标题 4</option>
-            </select>
-            <select id="lineHeight" title="行距">
-                <option value="1.0">1.0</option>
-                <option value="1.2">1.2</option>
-                <option value="1.5" selected>1.5</option>
-                <option value="1.8">1.8</option>
-                <option value="2.0">2.0</option>
-                <option value="2.5">2.5</option>
-                <option value="3.0">3.0</option>
-            </select>
-        </div>
+            <div class="toolbar-group">
+                <select class="tb-select" id="styleSel" title="段落样式" aria-label="段落样式">
+                    <option value="p">正文</option>
+                    <option value="h1">标题 1</option>
+                    <option value="h2">标题 2</option>
+                    <option value="h3">标题 3</option>
+                </select>
+                <select class="tb-select" id="fontSizeSel" title="字号" aria-label="字号">
+                    <option value="14px">14</option>
+                    <option value="16px" selected>16</option>
+                    <option value="20px">20</option>
+                    <option value="24px">24</option>
+                    <option value="32px">32</option>
+                    <option value="40px">40</option>
+                    <option value="48px">48</option>
+                </select>
+                <button class="tb-btn" id="boldBtn" title="加粗 (Ctrl+B)" aria-label="加粗"><b>B</b></button>
+                <button class="tb-btn" id="italicBtn" title="斜体 (Ctrl+I)" aria-label="斜体"><i>I</i></button>
+                <button class="tb-btn" id="underlineBtn" title="下划线 (Ctrl+U)" aria-label="下划线"><u>U</u></button>
+                <button class="tb-btn" id="strikeBtn" title="删除线" aria-label="删除线"><s>S</s></button>
+            </div>
 
-        <div class="toolbar-group">
-            <button id="insertMenuBtn" title="插入">插入<span class="dropdown-arrow">▾</span></button>
-            <div class="dropdown-panel" id="insertMenuPanel" style="min-width: 260px;">
-                <div class="panel-title">插入</div>
-                <div class="panel-list">
-                    <button id="insertLink">链接</button>
-                    <button id="insertImage">图片</button>
-                    <button id="insertTable">表格</button>
-                    <button id="insertTextBox">文本框</button>
-                    <button id="insertBlock">内容块</button>
-                    <button id="insertShape">形状</button>
-                    <button id="insertPageBreak">新页</button>
-                    <button id="tabStopBtn">制表位</button>
-                    <button id="insertHr">水平线</button>
-                </div>
-                <div class="panel-title" style="margin-top:6px;">形状</div>
-                <div class="shape-grid">
-                    <button data-shape="rect" title="矩形">▭</button>
-                    <button data-shape="circle" title="圆形">◯</button>
-                    <button data-shape="arrow" title="箭头">➔</button>
-                </div>
+            <div class="toolbar-group">
+                <button class="tb-btn" id="alignLeftBtn" title="左对齐" aria-label="左对齐">⬅</button>
+                <button class="tb-btn" id="alignCenterBtn" title="居中" aria-label="居中">⬍</button>
+                <button class="tb-btn" id="alignRightBtn" title="右对齐" aria-label="右对齐">➡</button>
+                <button class="tb-btn" id="alignJustifyBtn" title="两端对齐" aria-label="两端对齐">≡</button>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="tb-btn" id="bulletListBtn" title="项目符号列表" aria-label="项目符号列表">•</button>
+                <button class="tb-btn" id="numberedListBtn" title="编号列表" aria-label="编号列表">1.</button>
+            </div>
+
+            <div class="toolbar-group">
+                <input type="color" class="tb-color" id="textColor" value="#1a202c" title="文字颜色" aria-label="文字颜色">
+                <input type="color" class="tb-color" id="bgColor" value="#ffffff" title="幻灯片背景色" aria-label="幻灯片背景色">
+            </div>
+
+            <div class="toolbar-group">
+                <button class="tb-btn" id="insertTextBoxBtn" title="插入文本框" aria-label="插入文本框">文本框</button>
+                <button class="tb-btn" id="insertImageBtn" title="插入图片" aria-label="插入图片">图片</button>
+                <select class="tb-select" id="shapeSel" title="插入形状" aria-label="插入形状">
+                    <option value="">形状</option>
+                    <option value="rect">矩形</option>
+                    <option value="circle">圆形</option>
+                    <option value="arrow">箭头</option>
+                    <option value="hr">水平线</option>
+                </select>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="tb-btn" id="duplicateBtn" title="复制当前页" aria-label="复制当前页">复制</button>
+                <button class="tb-btn" id="moveUpBtn" title="上移" aria-label="上移">↑</button>
+                <button class="tb-btn" id="moveDownBtn" title="下移" aria-label="下移">↓</button>
+                <button class="tb-btn danger" id="deleteSlideBtn" title="删除当前页" aria-label="删除当前页">删</button>
             </div>
         </div>
 
-        <div class="toolbar-group">
-            <button id="symbolMenuBtn" title="符号与公式">公式<span class="dropdown-arrow">▾</span></button>
-            <div class="dropdown-panel" id="symbolMenuPanel" style="min-width: 360px;">
-                <div class="panel-title">输入 LaTeX 公式</div>
-                <div style="display:flex;gap:6px;margin-bottom:8px;">
-                    <input type="text" id="formulaInput" style="flex:1;padding:5px 8px;font-size:12px;border:1px solid #ccc;border-radius:4px;font-family:monospace;" placeholder="例如：E=mc^2">
-                    <button id="formulaInsertBtn" style="padding:5px 10px;background:#3b4cca;color:#fff;border:none;border-radius:4px;cursor:pointer;">插入</button>
-                </div>
-                <div class="panel-title">常用公式</div>
-                <div id="formulaList" style="display:flex;flex-direction:column;gap:4px;max-height:180px;overflow-y:auto;"></div>
-                <div class="panel-title" style="margin-top:8px;">数学符号</div>
-                <div class="shape-grid" id="symbolGrid"></div>
-                <div class="panel-title" style="margin-top:8px;">特殊字符</div>
-                <div class="shape-grid" id="specialGrid"></div>
+        <div class="canvas-wrapper" id="canvasWrapper">
+            <div class="canvas-scale-outer" id="canvasScaleOuter">
+                <div class="slide-canvas" id="slideCanvas" contenteditable="true" data-placeholder="点击此处开始编辑幻灯片内容…" role="textbox" aria-multiline="true" aria-label="幻灯片编辑画布"></div>
             </div>
-        </div>
-
-        <div class="toolbar-group">
-            <button id="findMenuBtn" title="查找与替换">查找<span class="dropdown-arrow">▾</span></button>
-            <button id="formatPainterBtn" title="格式刷">格式刷</button>
-            <div class="dropdown-panel" id="findMenuPanel" style="min-width: 280px;">
-                <div style="display:flex;gap:6px;margin-bottom:6px;"><input type="text" id="findText" placeholder="查找内容..." style="flex:1;padding:5px 8px;font-size:12px;border:1px solid #ccc;border-radius:4px;"></div>
-                <div style="display:flex;gap:6px;margin-bottom:6px;"><input type="text" id="replaceText" placeholder="替换为..." style="flex:1;padding:5px 8px;font-size:12px;border:1px solid #ccc;border-radius:4px;"></div>
-                <div style="display:flex;gap:6px;">
-                    <button id="findNextBtn" style="padding:5px 10px;font-size:12px;background:#3b4cca;color:#fff;border:none;border-radius:4px;cursor:pointer;">查找下一个</button>
-                    <button id="replaceBtn" style="padding:5px 10px;font-size:12px;background:#3b4cca;color:#fff;border:none;border-radius:4px;cursor:pointer;">替换</button>
-                    <button id="replaceAllBtn" style="padding:5px 10px;font-size:12px;background:#3b4cca;color:#fff;border:none;border-radius:4px;cursor:pointer;">全部替换</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="toolbar-group">
-            <div class="zoom-controls">
-                <button id="zoomOut" title="缩小">-</button>
-                <span class="zoom-display" id="zoomDisplay">100%</span>
-                <button id="zoomIn" title="放大">+</button>
-                <button id="zoomReset" title="重置为100%" style="font-size:11px;">重置</button>
+            <div class="zoom-badge" id="zoomBadge">
+                <span id="zoomText">100%</span>
+                <span class="overflow-warning" id="overflowWarning">⚠ 内容超出画布</span>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="editor-wrapper">
-        <div class="pages-container" id="pagesContainer">
-            <div class="editor-page" id="page1" contenteditable="true"></div>
+<footer class="status-bar">
+    <div class="status-left">
+        <div class="status-save">
+            <span class="status-dot" id="statusDot" aria-hidden="true"></span>
+            <span id="statusText" aria-live="polite">就绪</span>
+        </div>
+        <span class="status-info" id="statusInfo"></span>
+    </div>
+    <div class="action-buttons">
+        <button class="action-btn secondary" id="importBtn" title="导入 JSON 备份" aria-label="导入 JSON 备份">导入</button>
+        <button class="action-btn secondary" id="previewBtn" title="全屏预览" aria-label="全屏预览">预览</button>
+        <button class="action-btn primary" id="exportBtn" title="导出为 .pptx 文件" aria-label="导出为 .pptx 文件">导出 PPTX</button>
+    </div>
+</footer>
+
+<div class="preview-overlay" id="previewOverlay" role="dialog" aria-label="幻灯片全屏预览" aria-modal="true">
+    <div class="preview-stage" id="previewStage">
+        <div class="preview-slide" id="previewSlide">
+            <div class="preview-slide-inner readonly-mode" id="previewSlideInner"></div>
         </div>
     </div>
-
-    <div class="status-bar">
-        <span id="wordCount">字符数：0 | 行数：1 | 页数：1</span>
-        <span id="saveStatus">已保存</span>
+    <div class="preview-controls">
+        <button class="preview-btn" id="previewPrev" title="上一页" aria-label="上一页">◀</button>
+        <div class="preview-page-info" id="previewPageInfo">1 / 1</div>
+        <button class="preview-btn" id="previewNext" title="下一页" aria-label="下一页">▶</button>
+        <button class="preview-btn close" id="previewClose" title="退出预览" aria-label="退出预览">✕</button>
     </div>
+</div>
 
-    <input type="file" id="fileInput" accept=".docx" style="display: none;" />
+<input type="file" id="imageInput" accept="image/*" class="hidden-input" aria-label="选择要插入的图片">
+<input type="file" id="importInput" accept=".json" class="hidden-input" aria-label="选择要导入的 JSON 备份文件">
 
-    <script>
-    (function() {
-        var pagesContainer = document.getElementById('pagesContainer');
-        var status = document.getElementById('wordCount');
-        var saveStatus = document.getElementById('saveStatus');
-        var STORAGE_KEY = 'nortbook_word_content';
-        var saveTimer = null;
-        var isHandlingUnload = false;
-        var currentZoom = 1.0;
-        var MAX_CHARS_PER_PAGE = 1500;
-        var savedRange = null;
+<script>
+(function() {
+    'use strict';
 
-        function isMobile() { return window.innerWidth <= 768; }
+    var STORAGE_KEY = 'nortbook_ppt_v1';
+    var SLIDE_W = 960;
+    var SLIDE_H = 540;
+    var CANVAS_PADDING = 48;
 
-        // ============ 从缓存恢复 ============
+    var slides = [];
+    var currentIndex = 0;
+    var saveTimer = null;
+    var savedRange = null;
+    var currentScale = 1;
+    var previewIndex = 0;
+    var imgToolbar = null;
+    var textBoxToolbar = null;
+    var textBoxCounter = 0;
+
+    var $ = function(id) { return document.getElementById(id); };
+    var slideList = $('slideList');
+    var slideCount = $('slideCount');
+    var canvas = $('slideCanvas');
+    var canvasWrapper = $('canvasWrapper');
+    var canvasScaleOuter = $('canvasScaleOuter');
+    var zoomText = $('zoomText');
+    var overflowWarning = $('overflowWarning');
+    var statusText = $('statusText');
+    var statusDot = $('statusDot');
+    var statusInfo = $('statusInfo');
+    var imageInput = $('imageInput');
+    var importInput = $('importInput');
+    var exportBtn = $('exportBtn');
+
+    var previewOverlay = $('previewOverlay');
+    var previewStage = $('previewStage');
+    var previewSlide = $('previewSlide');
+    var previewSlideInner = $('previewSlideInner');
+    var previewPageInfo = $('previewPageInfo');
+
+    function genId() { return 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8); }
+
+    function cleanHtmlForDisplay(html) {
+        if (!html) return '';
+        return html
+            .replace(/<span class="img-resizer"[^>]*><\/span>/g, '')
+            .replace(/<div class="text-box-resizer"[^>]*><\/div>/g, '')
+            .replace(/img-wrap selected/g, 'img-wrap')
+            .replace(/text-box-wrap selected/g, 'text-box-wrap');
+    }
+
+    function getLayoutTemplate(layout) {
+        switch (layout) {
+            case 'title':
+                return '<h1 style="text-align:center;margin-top:160px;">点击输入标题</h1><p style="text-align:center;font-size:20px;color:#666;">点击输入副标题</p>';
+            case 'title-content':
+                return '<h2>标题</h2><ul><li>第一条内容</li><li>第二条内容</li><li>第三条内容</li></ul>';
+            case 'title-only':
+                return '<h1 style="text-align:center;margin-top:200px;">点击输入标题</h1>';
+            case 'blank':
+                return '';
+            default:
+                return '<h1>点击此处输入标题</h1><p>点击此处输入内容…</p>';
+        }
+    }
+
+    function loadData() {
         try {
-            var saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) {
-                var parts = saved.split('<!--PAGE_BREAK-->');
-                var page1 = document.getElementById('page1');
-                page1.innerHTML = parts[0] || '';
-                for (var i = 1; i < parts.length; i++) {
-                    var np = document.createElement('div');
-                    np.className = 'editor-page';
-                    np.setAttribute('contenteditable', 'true');
-                    np.innerHTML = parts[i];
-                    pagesContainer.appendChild(np);
-                    bindPageEvents(np);
-                }
-            }
-        } catch(e) {}
-
-        // ============ 页面管理 ============
-        function getAllPages() { return Array.from(document.querySelectorAll('.editor-page')); }
-
-        function createNewPage() {
-            var newPage = document.createElement('div');
-            newPage.className = 'editor-page';
-            newPage.setAttribute('contenteditable', 'true');
-            pagesContainer.appendChild(newPage);
-            bindPageEvents(newPage);
-            return newPage;
-        }
-
-        function bindPageEvents(page) {
-            page.addEventListener('input', function() {
-                autoSave();
-                updateCount();
-                isHandlingUnload = false;
-                if (!isMobile()) scheduleLengthCheck();
-            });
-        }
-        bindPageEvents(document.getElementById('page1'));
-
-        // ============ 选区保存/恢复 ============
-        function saveCurrentSelection() {
-            var sel = window.getSelection();
-            if (sel.rangeCount) {
-                try { savedRange = sel.getRangeAt(0).cloneRange(); } catch(e) {}
-            }
-        }
-        function restoreCurrentSelection() {
-            if (!savedRange) return false;
-            try {
-                var sel = window.getSelection();
-                sel.removeAllRanges();
-                sel.addRange(savedRange);
-                return true;
-            } catch(e) { return false; }
-        }
-
-        // ============ 在工具栏控件上保存选区 ============
-        // 所有 toolbar 的按钮、select、color 输入框在 mousedown / touchstart 时保存选区
-        document.querySelectorAll('.toolbar button, .toolbar select, .toolbar input[type="color"]').forEach(function(el) {
-            el.addEventListener('mousedown', saveCurrentSelection);
-            el.addEventListener('touchstart', saveCurrentSelection, { passive: true });
-        });
-
-        // ============ 设置字号（核心修复） ============
-        function setFontSize(size) {
-            // 恢复选区
-            restoreCurrentSelection();
-            var sel = window.getSelection();
-            if (!sel.rangeCount) return;
-            var range = sel.getRangeAt(0);
-
-            if (range.collapsed) {
-                // 折叠选区：在光标处插入一个带字号的占位 span
-                var span = document.createElement('span');
-                span.style.fontSize = size;
-                span.appendChild(document.createTextNode('\u200B'));
-                range.insertNode(span);
-                var newRange = document.createRange();
-                newRange.setStart(span.firstChild, 1);
-                newRange.collapse(true);
-                sel.removeAllRanges();
-                sel.addRange(newRange);
-            } else {
-                // 非折叠选区：execCommand 占位字号 + 替换为 span
-                try {
-                    document.execCommand('styleWithCSS', false, true);
-                    document.execCommand('fontSize', false, '7');
-                } catch(e) {}
-
-                // 找到当前活动页
-                var node = range.commonAncestorContainer;
-                if (node.nodeType === 3) node = node.parentElement;
-                while (node && !node.classList.contains('editor-page')) {
-                    node = node.parentElement;
-                }
-                var targetPage = node || document.getElementById('page1');
-
-                // 替换 font[size="7"] 为 span[style="font-size: size"]
-                targetPage.querySelectorAll('font[size="7"]').forEach(function(font) {
-                    var newSpan = document.createElement('span');
-                    newSpan.style.fontSize = size;
-                    while (font.firstChild) newSpan.appendChild(font.firstChild);
-                    font.parentNode.replaceChild(newSpan, font);
-                });
-
-                // 部分浏览器生成 span[style*="xxx-large"] 也要处理
-                targetPage.querySelectorAll('span').forEach(function(sp) {
-                    var fs = sp.style.fontSize;
-                    if (fs === 'xxx-large' || fs === '48px' || fs === '7') {
-                        sp.style.fontSize = size;
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                var data = JSON.parse(raw);
+                if (data && Array.isArray(data.slides) && data.slides.length > 0) {
+                    slides = data.slides.filter(function(s) { return s && s.id && typeof s.html === 'string'; });
+                    if (slides.length > 0) {
+                        currentIndex = Math.min(Math.max(0, data.currentIndex || 0), slides.length - 1);
+                        return;
                     }
-                });
+                }
             }
-            autoSave();
-        }
+        } catch (e) { console.warn('读取数据失败', e); }
 
-        // 绑定字号选择器
-        var fontSizeSelect = document.getElementById('fontSize');
-        fontSizeSelect.addEventListener('change', function() {
-            setFontSize(this.value);
+        slides = [{ id: genId(), html: '<h1>点击此处输入标题</h1><p>点击此处输入内容…</p>', bg: '#ffffff' }];
+        currentIndex = 0;
+    }
+
+    function saveData() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ slides: slides, currentIndex: currentIndex }));
+            return true;
+        } catch (e) { return false; }
+    }
+
+    function syncCanvasToData() {
+        if (!slides[currentIndex]) return;
+        slides[currentIndex].html = canvas.innerHTML;
+        slides[currentIndex].bg = canvas.style.backgroundColor || '#ffffff';
+    }
+
+    function autoSave() {
+        syncCanvasToData();
+        statusText.textContent = '保存中…';
+        statusDot.className = 'status-dot saving';
+
+        if (saveTimer) clearTimeout(saveTimer);
+        saveTimer = setTimeout(function() {
+            var ok = saveData();
+            if (ok) {
+                statusText.textContent = '已保存';
+                statusDot.className = 'status-dot';
+            } else {
+                statusText.textContent = '保存失败';
+                statusDot.className = 'status-dot error';
+            }
+            updateCurrentThumb();
+            updateInfo();
+        }, 400);
+    }
+
+    function checkOverflow() {
+        var contentH = canvas.scrollHeight;
+        var hasOverflow = contentH > SLIDE_H + 1;
+        overflowWarning.classList.toggle('show', hasOverflow);
+    }
+
+    function updateCanvasScale() {
+        var availW = canvasWrapper.clientWidth - CANVAS_PADDING;
+        var availH = canvasWrapper.clientHeight - CANVAS_PADDING;
+        if (availW < 100 || availH < 100) return;
+
+        var scale = Math.min(availW / SLIDE_W, availH / SLIDE_H);
+        if (scale > 1) scale = 1;
+        if (scale < 0.2) scale = 0.2;
+
+        currentScale = scale;
+        canvasScaleOuter.style.width = (SLIDE_W * scale) + 'px';
+        canvasScaleOuter.style.height = (SLIDE_H * scale) + 'px';
+        canvas.style.transform = 'scale(' + scale + ')';
+        zoomText.textContent = Math.round(scale * 100) + '%';
+        checkOverflow();
+    }
+
+    function updateThumbScale(thumb) {
+        var inner = thumb.querySelector('.slide-thumb-inner');
+        if (!inner) return;
+        var w = thumb.clientWidth;
+        if (w > 0) inner.style.transform = 'scale(' + (w / SLIDE_W) + ')';
+    }
+
+    function renderThumbnails() {
+        slideList.innerHTML = '';
+        slides.forEach(function(s, i) {
+            var thumb = document.createElement('div');
+            thumb.className = 'slide-thumb' + (i === currentIndex ? ' active' : '');
+            thumb.setAttribute('data-index', i);
+
+            var inner = document.createElement('div');
+            inner.className = 'slide-thumb-inner readonly-mode';
+            inner.style.backgroundColor = s.bg || '#ffffff';
+            inner.innerHTML = cleanHtmlForDisplay(s.html);
+            thumb.appendChild(inner);
+
+            var num = document.createElement('span');
+            num.className = 'slide-thumb-num';
+            num.textContent = (i + 1);
+            thumb.appendChild(num);
+
+            thumb.addEventListener('click', function() { goToSlide(i); });
+            slideList.appendChild(thumb);
         });
-        // 键盘无障碍操作也支持
-        fontSizeSelect.addEventListener('keyup', function(e) {
-            if (e.key === 'Enter') setFontSize(this.value);
+
+        requestAnimationFrame(function() {
+            slideList.querySelectorAll('.slide-thumb').forEach(updateThumbScale);
         });
 
-        // ============ 字数统计 ============
-        function getPageCharCount(page) {
-            return (page.innerText || '').replace(/\s/g, '').length;
-        }
+        slideCount.textContent = slides.length;
+        updateInfo();
+    }
 
-        var lengthCheckTimer = null;
-        function scheduleLengthCheck() {
-            clearTimeout(lengthCheckTimer);
-            lengthCheckTimer = setTimeout(checkLengthAndPaginate, 400);
+    function updateCurrentThumb() {
+        var thumb = slideList.querySelector('.slide-thumb[data-index="' + currentIndex + '"]');
+        if (!thumb) return;
+        var inner = thumb.querySelector('.slide-thumb-inner');
+        var s = slides[currentIndex];
+        if (inner && s) {
+            inner.style.backgroundColor = s.bg || '#ffffff';
+            inner.innerHTML = cleanHtmlForDisplay(s.html);
         }
+    }
 
-        function placeCaretAtStart(page) {
+    function updateInfo() {
+        var text = (canvas.innerText || '').trim();
+        var chars = text.replace(/\s/g, '').length;
+        statusInfo.textContent = '共 ' + slides.length + ' 页 · 第 ' + (currentIndex + 1) + ' 页 · ' + chars + ' 字';
+    }
+
+    function hideAllToolbars() {
+        hideImgToolbar();
+        hideTextBoxToolbar();
+        canvas.querySelectorAll('.img-wrap.selected, .text-box-wrap.selected').forEach(function(w) {
+            w.classList.remove('selected');
+        });
+    }
+
+    function goToSlide(index) {
+        if (index < 0 || index >= slides.length) return;
+        hideAllToolbars();
+        syncCanvasToData();
+        currentIndex = index;
+
+        var s = slides[currentIndex];
+        canvas.innerHTML = s.html || '';
+        canvas.style.backgroundColor = s.bg || '#ffffff';
+
+        slideList.querySelectorAll('.slide-thumb').forEach(function(t) {
+            t.classList.toggle('active', parseInt(t.getAttribute('data-index'), 10) === index);
+        });
+
+        // 重新绑定所有文本框
+        canvas.querySelectorAll('.text-box-wrap').forEach(function(w) {
+            bindTextBoxEvents(w);
+        });
+
+        saveData();
+        updateInfo();
+        checkOverflow();
+        canvas.focus();
+    }
+
+    function addSlide() {
+        hideAllToolbars();
+        syncCanvasToData();
+        var newSlide = { id: genId(), html: '<h1>新幻灯片</h1><p>点击此处输入内容…</p>', bg: '#ffffff' };
+        slides.push(newSlide);
+        currentIndex = slides.length - 1;
+        saveData();
+        renderThumbnails();
+        goToSlide(currentIndex);
+        statusText.textContent = '已添加新幻灯片';
+        statusDot.className = 'status-dot';
+    }
+
+    function deleteSlide() {
+        hideAllToolbars();
+        if (slides.length <= 1) { alert('至少需要保留一张幻灯片'); return; }
+        if (!confirm('确定要删除第 ' + (currentIndex + 1) + ' 页吗？')) return;
+        slides.splice(currentIndex, 1);
+        if (currentIndex >= slides.length) currentIndex = slides.length - 1;
+        saveData();
+        renderThumbnails();
+        goToSlide(currentIndex);
+        statusText.textContent = '已删除一页';
+        statusDot.className = 'status-dot';
+    }
+
+    function duplicateSlide() {
+        hideAllToolbars();
+        syncCanvasToData();
+        var s = slides[currentIndex];
+        var copy = { id: genId(), html: s.html, bg: s.bg || '#ffffff' };
+        slides.splice(currentIndex + 1, 0, copy);
+        currentIndex++;
+        saveData();
+        renderThumbnails();
+        goToSlide(currentIndex);
+        statusText.textContent = '已复制当前页';
+        statusDot.className = 'status-dot';
+    }
+
+    function moveSlideUp() {
+        hideAllToolbars();
+        if (currentIndex <= 0) return;
+        syncCanvasToData();
+        var tmp = slides[currentIndex];
+        slides[currentIndex] = slides[currentIndex - 1];
+        slides[currentIndex - 1] = tmp;
+        currentIndex--;
+        saveData();
+        renderThumbnails();
+        goToSlide(currentIndex);
+    }
+
+    function moveSlideDown() {
+        hideAllToolbars();
+        if (currentIndex >= slides.length - 1) return;
+        syncCanvasToData();
+        var tmp = slides[currentIndex];
+        slides[currentIndex] = slides[currentIndex + 1];
+        slides[currentIndex + 1] = tmp;
+        currentIndex++;
+        saveData();
+        renderThumbnails();
+        goToSlide(currentIndex);
+    }
+
+    function saveSelection() {
+        var sel = window.getSelection();
+        if (sel.rangeCount > 0) {
+            try { savedRange = sel.getRangeAt(0).cloneRange(); } catch (e) {}
+        }
+    }
+
+    function restoreSelection() {
+        if (!savedRange) return false;
+        try {
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(savedRange);
+            return true;
+        } catch (e) { return false; }
+    }
+
+    document.querySelectorAll('.slide-toolbar button, .slide-toolbar select, .slide-toolbar input').forEach(function(el) {
+        el.addEventListener('mousedown', saveSelection);
+        el.addEventListener('touchstart', saveSelection, { passive: true });
+    });
+
+    function execCmd(cmd, value) {
+        restoreSelection();
+        canvas.focus();
+        document.execCommand(cmd, false, value || null);
+        autoSave();
+        checkOverflow();
+    }
+
+    function applyLayout(layout, layoutName) {
+        hideAllToolbars();
+        var template = getLayoutTemplate(layout);
+        canvas.focus();
+        var isEmpty = !canvas.textContent.trim() &&
+                      !canvas.querySelector('img, table, hr, .shape-rect, .shape-circle, .shape-arrow, .text-box-wrap');
+
+        if (isEmpty) {
+            canvas.innerHTML = template;
+        } else {
             try {
-                var range = document.createRange();
-                range.selectNodeContents(page);
-                range.collapse(true);
                 var sel = window.getSelection();
+                var range = document.createRange();
+                range.selectNodeContents(canvas);
                 sel.removeAllRanges();
                 sel.addRange(range);
-            } catch(e) {}
+                document.execCommand('insertHTML', false, template);
+            } catch (e) {
+                canvas.innerHTML = template;
+            }
         }
 
-        function checkLengthAndPaginate() {
-            if (isMobile()) return;
-            var activePage = document.activeElement;
-            if (!activePage || !activePage.classList || !activePage.classList.contains('editor-page')) return;
+        autoSave();
+        checkOverflow();
+        updateInfo();
+        statusText.textContent = '已应用「' + (layoutName || layout) + '」版式 · 可按 Ctrl+Z 撤销';
+        statusDot.className = 'status-dot';
+    }
 
-            var count = getPageCharCount(activePage);
-            if (count < MAX_CHARS_PER_PAGE) return;
+    var layoutSel = $('layoutSel');
+    layoutSel.addEventListener('change', function() {
+        var layout = this.value;
+        var layoutName = '';
+        if (this.selectedIndex >= 0 && this.options[this.selectedIndex]) {
+            layoutName = this.options[this.selectedIndex].text;
+        }
+        this.value = '';
+        if (!layout) return;
+        applyLayout(layout, layoutName);
+    });
 
-            var sel = window.getSelection();
-            if (!sel.rangeCount) return;
-            var range = sel.getRangeAt(0);
+    // 格式按钮
+    $('boldBtn').addEventListener('click', function() { execCmd('bold'); });
+    $('italicBtn').addEventListener('click', function() { execCmd('italic'); });
+    $('underlineBtn').addEventListener('click', function() { execCmd('underline'); });
+    $('strikeBtn').addEventListener('click', function() { execCmd('strikeThrough'); });
+    $('undoBtn').addEventListener('click', function() { execCmd('undo'); });
+    $('redoBtn').addEventListener('click', function() { execCmd('redo'); });
 
+    $('alignLeftBtn').addEventListener('click', function() { execCmd('justifyLeft'); });
+    $('alignCenterBtn').addEventListener('click', function() { execCmd('justifyCenter'); });
+    $('alignRightBtn').addEventListener('click', function() { execCmd('justifyRight'); });
+    $('alignJustifyBtn').addEventListener('click', function() { execCmd('justifyFull'); });
+
+    $('bulletListBtn').addEventListener('click', function() { execCmd('insertUnorderedList'); });
+    $('numberedListBtn').addEventListener('click', function() { execCmd('insertOrderedList'); });
+
+    $('styleSel').addEventListener('change', function() { execCmd('formatBlock', this.value); });
+
+    $('fontSizeSel').addEventListener('change', function() {
+        var size = this.value;
+        restoreSelection();
+        var sel = window.getSelection();
+        if (!sel.rangeCount) return;
+        var range = sel.getRangeAt(0);
+
+        if (range.collapsed) {
+            var span = document.createElement('span');
+            span.style.fontSize = size;
+            span.appendChild(document.createTextNode('\u200B'));
+            range.insertNode(span);
+            var nr = document.createRange();
+            nr.setStart(span.firstChild, 1);
+            nr.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(nr);
+        } else {
             try {
-                var afterRange = document.createRange();
-                afterRange.setStart(range.endContainer, range.endOffset);
-                afterRange.setEndAfter(activePage.lastChild);
-                var remainingText = afterRange.toString();
-                if (remainingText.length > 200) return;
-            } catch(e) { return; }
+                document.execCommand('styleWithCSS', false, true);
+                document.execCommand('fontSize', false, '7');
+            } catch (e) {}
 
-            var nextPage = activePage.nextElementSibling;
-            if (!nextPage || !nextPage.classList.contains('editor-page')) nextPage = createNewPage();
+            canvas.querySelectorAll('font[size="7"]').forEach(function(font) {
+                var s = document.createElement('span');
+                s.style.fontSize = size;
+                while (font.firstChild) s.appendChild(font.firstChild);
+                font.parentNode.replaceChild(s, font);
+            });
 
-            try {
-                var splitRange = document.createRange();
-                splitRange.setStart(range.endContainer, range.endOffset);
-                var lastChild = activePage.lastChild;
-                if (lastChild) splitRange.setEndAfter(lastChild);
-                var extracted = splitRange.extractContents();
-                if (extracted.textContent.trim() || (extracted.querySelector && extracted.querySelector('img, table, hr, .shape-rect, .shape-circle, .shape-arrow'))) {
-                    nextPage.insertBefore(extracted, nextPage.firstChild);
+            canvas.querySelectorAll('span').forEach(function(sp) {
+                if (sp.style.fontSize === 'xxx-large' || sp.style.fontSize === '48px') {
+                    sp.style.fontSize = size;
                 }
-                nextPage.focus();
-                placeCaretAtStart(nextPage);
-                autoSave(); updateCount();
-            } catch(e) { console.error('分页失败:', e); }
-        }
-
-        // ============ 自动保存 ============
-        function saveToStorage() {
-            try {
-                var allContent = getAllPages().map(function(p) { return p.innerHTML; }).join('<!--PAGE_BREAK-->');
-                localStorage.setItem(STORAGE_KEY, allContent);
-                return true;
-            } catch(e) { return false; }
-        }
-        function autoSave() {
-            saveStatus.textContent = '保存中...';
-            clearTimeout(saveTimer);
-            saveTimer = setTimeout(function() {
-                if (saveToStorage()) saveStatus.textContent = '✓ 已保存';
-                else saveStatus.textContent = '⚠ 保存失败';
-            }, 300);
-        }
-
-        function updateCount() {
-            var allText = '';
-            getAllPages().forEach(function(p) { allText += p.innerText || ''; });
-            var chars = allText.replace(/\s/g, '').length;
-            var lines = allText.split('\n').length;
-            status.textContent = '字符数：' + chars + ' | 行数：' + lines + ' | 页数：' + getAllPages().length;
-        }
-        updateCount();
-
-        function exec(cmd, value) {
-            restoreCurrentSelection();
-            var activePage = document.activeElement;
-            if (!activePage || !activePage.classList || !activePage.classList.contains('editor-page')) {
-                activePage = document.getElementById('page1');
-                activePage.focus();
-            }
-            document.execCommand(cmd, false, value || null);
-            autoSave();
-            if (!isMobile()) scheduleLengthCheck();
-        }
-
-        // ============ 下载 .docx ============
-        function downloadDocx() {
-            if (typeof htmlDocx === 'undefined') { alert('docx 库尚未加载'); return false; }
-            var allContent = '';
-            getAllPages().forEach(function(p, i) {
-                if (i > 0) allContent += '<div style="page-break-before: always;"></div>';
-                allContent += p.innerHTML;
-            });
-            var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:"Microsoft YaHei",Arial;font-size:15px;line-height:1.8;} table{border-collapse:collapse;width:100%;} td{border:1px solid #ccc;padding:8px;} h1{font-size:28px;font-weight:800;} h2{font-size:24px;font-weight:700;} h3{font-size:20px;font-weight:700;} h4{font-size:18px;font-weight:700;}</style></head><body>' + allContent + '</body></html>';
-            var blob = htmlDocx.asBlob(html, { orientation: 'portrait', margins: { top: 720, right: 720, bottom: 720, left: 720 } });
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url;
-            a.download = 'Nortbook_Document.docx';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            saveStatus.textContent = '✓ 已下载 .docx';
-            return true;
-        }
-
-        // ============ 工具栏绑定 ============
-        ['boldBtn', 'italicBtn', 'underlineBtn', 'strikeBtn'].forEach(function(id) {
-            document.getElementById(id).addEventListener('click', function() {
-                var cmd = { boldBtn: 'bold', italicBtn: 'italic', underlineBtn: 'underline', strikeBtn: 'strikeThrough' }[id];
-                exec(cmd); this.classList.toggle('active');
-            });
-        });
-
-        document.getElementById('fontFamily').addEventListener('change', function() { exec('fontName', this.value); });
-
-        document.getElementById('styleSelect').addEventListener('change', function() {
-            exec('formatBlock', this.value);
-        });
-
-        document.getElementById('textColor').addEventListener('input', function() { exec('foreColor', this.value); });
-        document.getElementById('bgColor').addEventListener('input', function() { exec('hiliteColor', this.value); });
-
-        document.getElementById('lineHeight').addEventListener('change', function() {
-            restoreCurrentSelection();
-            var lh = this.value;
-            document.execCommand('styleWithCSS', false, true);
-            var sel = window.getSelection();
-            if (sel.rangeCount) {
-                var range = sel.getRangeAt(0);
-                var container = range.commonAncestorContainer;
-                var block = container.nodeType === 1 ? container : container.parentElement;
-                while (block && block.classList && !block.classList.contains('editor-page') && !/^(P|DIV|H[1-6]|LI|BLOCKQUOTE)$/.test(block.tagName)) block = block.parentElement;
-                if (block && !block.classList.contains('editor-page')) block.style.lineHeight = lh;
-            }
-            autoSave();
-        });
-
-        // ============ 面板控制 ============
-        function hideAllPanels() {
-            document.querySelectorAll('.dropdown-panel').forEach(function(p) { p.classList.remove('show'); });
-        }
-        function togglePanel(btnId, panelId) {
-            document.getElementById(btnId).addEventListener('click', function(e) {
-                e.stopPropagation();
-                var panel = document.getElementById(panelId);
-                var wasOpen = panel.classList.contains('show');
-                hideAllPanels();
-                if (!wasOpen) panel.classList.add('show');
             });
         }
-        togglePanel('insertMenuBtn', 'insertMenuPanel');
-        togglePanel('symbolMenuBtn', 'symbolMenuPanel');
-        togglePanel('findMenuBtn', 'findMenuPanel');
-        document.addEventListener('click', function(e) { if (!e.target.closest('.toolbar-group')) hideAllPanels(); });
+        autoSave();
+        checkOverflow();
+    });
 
-        // ============ 符号、特殊字符、公式 ============
-        var SYMBOLS = ['±','×','÷','≠','≤','≥','∞','√','∑','∏','∫','∂','π','θ','α','β','γ','δ','λ','μ','σ','φ','ω','∈','∉','⊂','⊃','∪','∩','∀','∃','→','←','↑','↓','↔','⇒','⇔','°','′','″','¥','€','£','¢','§','¶','†','‡','•','…','‰','％','＃','＆','＊','＋','－','＝','＜','＞'];
-        var symbolGrid = document.getElementById('symbolGrid');
-        SYMBOLS.forEach(function(s) { var b = document.createElement('button'); b.textContent = s; b.addEventListener('click', function() { exec('insertText', s); hideAllPanels(); }); symbolGrid.appendChild(b); });
+    $('textColor').addEventListener('input', function() { execCmd('foreColor', this.value); });
+    $('bgColor').addEventListener('input', function() {
+        canvas.style.backgroundColor = this.value;
+        autoSave();
+    });
 
-        var SPECIALS = ['©','®','™','℠','℃','℉','№','℗','℅','‰','†','‡','§','¶','•','…','–','—','‘','’','“','”','«','»','‹','›','¡','¿','×','÷','±','∞','√','∑','∏','∫','π','α','β','γ','δ','ε','ζ','η','θ','ι','κ','λ','μ','ν','ξ','ο','ρ','σ','τ','υ','φ','χ','ψ','ω','←','→','↑','↓','↔','⇒','⇔','★','☆','♥','♦','♣','♠','✓','✗','✈','☀','☁','☂','☃','☎','✉','✏','✂','✆','©'];
-        var specialGrid = document.getElementById('specialGrid');
-        SPECIALS.forEach(function(s) { var b = document.createElement('button'); b.textContent = s; b.addEventListener('click', function() { exec('insertText', s); hideAllPanels(); }); specialGrid.appendChild(b); });
+    // ============ ⭐ 插入文本框 ============
+    $('insertTextBoxBtn').addEventListener('click', function() {
+        insertTextBox();
+    });
 
-        var FORMULAS = [
-            { name: '二次公式', latex: 'x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}' },
-            { name: '勾股定理', latex: 'a^2 + b^2 = c^2' },
-            { name: '欧拉恒等式', latex: 'e^{i\\pi} + 1 = 0' },
-            { name: '质能方程', latex: 'E = mc^2' },
-            { name: '求和', latex: '\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}' },
-            { name: '积分', latex: '\\int_{a}^{b} f(x) \\, dx = F(b) - F(a)' },
-            { name: '极限', latex: '\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1' },
-            { name: '分数', latex: '\\frac{a}{b}' },
-            { name: '根号', latex: '\\sqrt{x}' }
-        ];
-        var formulaList = document.getElementById('formulaList');
-        FORMULAS.forEach(function(f) { var b = document.createElement('button'); b.textContent = f.name + '：' + f.latex; b.style.cssText = 'padding:6px 10px;font-size:12px;background:#fafafa;border:1px solid #e0e0e0;border-radius:4px;cursor:pointer;text-align:left;'; b.addEventListener('click', function() { insertFormula(f.latex); hideAllPanels(); }); formulaList.appendChild(b); });
+    function insertTextBox() {
+        hideAllToolbars();
+        textBoxCounter++;
+        var offset = (textBoxCounter % 8) * 20;
 
-        function insertFormula(latex) {
-            if (typeof katex === 'undefined') { alert('KaTeX 未加载'); return; }
-            try {
-                var html = katex.renderToString(latex, { throwOnError: false, displayMode: false });
-                exec('insertHTML', '<span class="katex-inline" contenteditable="false" data-latex="' + latex.replace(/"/g, '&quot;') + '">' + html + '</span>&nbsp;');
-            } catch(e) { alert('公式渲染失败：' + e.message); }
-        }
-        document.getElementById('formulaInsertBtn').addEventListener('click', function() {
-            var val = document.getElementById('formulaInput').value.trim();
-            if (!val) return;
-            insertFormula(val);
-            document.getElementById('formulaInput').value = '';
-        });
+        var wrap = document.createElement('div');
+        wrap.className = 'text-box-wrap';
+        wrap.setAttribute('contenteditable', 'false');
+        wrap.style.left = (60 + offset) + 'px';
+        wrap.style.top = (60 + offset) + 'px';
+        wrap.style.width = '320px';
 
-        // ============ 插入操作 ============
-        document.getElementById('insertLink').addEventListener('click', function() { var url = prompt('请输入链接地址：', 'https://'); if (url) exec('createLink', url); hideAllPanels(); });
-        document.getElementById('insertImage').addEventListener('click', function() { var input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*'; input.onchange = function(e) { var file = e.target.files[0]; if (!file) return; var reader = new FileReader(); reader.onload = function(ev) { exec('insertImage', ev.target.result); }; reader.readAsDataURL(file); }; input.click(); hideAllPanels(); });
-        document.getElementById('insertTable').addEventListener('click', function() { var rows = parseInt(prompt('表格行数：', '3')); var cols = parseInt(prompt('表格列数：', '3')); if (!rows || !cols) { hideAllPanels(); return; } var html = '<table>'; for (var i = 0; i < rows; i++) { html += '<tr>'; for (var j = 0; j < cols; j++) html += '<td><br></td>'; html += '</tr>'; } html += '</table><p><br></p>'; document.execCommand('insertHTML', false, html); autoSave(); hideAllPanels(); });
-        document.getElementById('insertTextBox').addEventListener('click', function() { exec('insertHTML', '<div class="text-box" contenteditable="true">在此输入文本...</div><p><br></p>'); hideAllPanels(); });
-        document.getElementById('insertBlock').addEventListener('click', function() { exec('insertHTML', '<div class="content-block" contenteditable="true"><strong>内容块标题</strong><p>在此输入内容...</p></div><p><br></p>'); hideAllPanels(); });
-        document.getElementById('insertPageBreak').addEventListener('click', function() {
-            var activePage = document.activeElement;
-            if (!activePage || !activePage.classList.contains('editor-page')) activePage = document.getElementById('page1');
-            var newPage = createNewPage();
-            newPage.focus();
-            placeCaretAtStart(newPage);
-            hideAllPanels();
-            autoSave();
-            updateCount();
-        });
-        document.getElementById('tabStopBtn').addEventListener('click', function() { exec('insertHTML', '<span class="tab-stop" contenteditable="false" style="display:inline-block;width:40px;border-bottom:1px dotted #999;height:1em;"></span>'); hideAllPanels(); });
-        document.getElementById('insertHr').addEventListener('click', function() { exec('insertHTML', '<hr><p><br></p>'); hideAllPanels(); });
+        var inner = document.createElement('div');
+        inner.className = 'text-box-inner';
+        inner.setAttribute('contenteditable', 'true');
+        inner.textContent = '双击编辑文字…';
 
-        document.querySelectorAll('#insertMenuPanel button[data-shape]').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var shape = this.dataset.shape;
-                var html = '';
-                if (shape === 'rect') html = '<div class="shape-rect" contenteditable="false"></div>';
-                else if (shape === 'circle') html = '<div class="shape-circle" contenteditable="false"></div>';
-                else if (shape === 'arrow') html = '<div class="shape-arrow" contenteditable="false"></div>';
-                exec('insertHTML', html); hideAllPanels();
-            });
-        });
+        var resizer = document.createElement('div');
+        resizer.className = 'text-box-resizer';
 
-        document.getElementById('undoBtn').addEventListener('click', function() { exec('undo'); });
-        document.getElementById('redoBtn').addEventListener('click', function() { exec('redo'); });
-        document.getElementById('clearFormat').addEventListener('click', function() { exec('removeFormat'); });
+        wrap.appendChild(inner);
+        wrap.appendChild(resizer);
+        canvas.appendChild(wrap);
 
-        // ============ 导入 ============
-        var fileInput = document.getElementById('fileInput');
-        document.getElementById('importBtn').addEventListener('click', function() { fileInput.click(); });
-        fileInput.addEventListener('change', function(e) {
-            var file = e.target.files[0]; if (!file) return;
-            if (!file.name.toLowerCase().endsWith('.docx')) { alert('仅支持导入 .docx'); fileInput.value = ''; return; }
-            if (typeof mammoth === 'undefined') { alert('mammoth 库尚未加载'); return; }
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-                mammoth.convertToHtml({ arrayBuffer: ev.target.result })
-                    .then(function(result) {
-                        getAllPages().forEach(function(p, i) { if (i > 0) p.remove(); });
-                        document.getElementById('page1').innerHTML = result.value;
-                        autoSave(); updateCount();
-                        saveStatus.textContent = '✓ 已导入 ' + file.name;
-                    }).catch(function(err) { alert('导入失败：' + err.message); });
-            };
-            reader.readAsArrayBuffer(file);
-            fileInput.value = '';
-        });
+        bindTextBoxEvents(wrap);
+        selectTextbox(wrap);
 
-        // ============ 保存按钮 ============
-        var saveBtn = document.getElementById('saveBtn');
-        var newSaveBtn = saveBtn.cloneNode(true);
-        saveBtn.parentNode.replaceChild(newSaveBtn, saveBtn);
-        newSaveBtn.addEventListener('click', function() {
-            if (downloadDocx()) {
-                try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
-                isHandlingUnload = true;
-                saveStatus.textContent = '✓ 已下载并清理缓存';
-            }
-        });
+        autoSave();
+        checkOverflow();
+        updateCurrentThumb();
+        statusText.textContent = '已插入文本框（双击编辑，拖动移动，右下角缩放）';
+        statusDot.className = 'status-dot';
+    }
 
-        // ============ 缩放 ============
-        function applyZoom() {
-            if (isMobile()) {
-                pagesContainer.style.transform = 'none';
+    function bindTextBoxEvents(wrap) {
+        if (wrap._bound) return;
+        wrap._bound = true;
+
+        var inner = wrap.querySelector('.text-box-inner');
+        var resizer = wrap.querySelector('.text-box-resizer');
+        if (!inner || !resizer) return;
+
+        // mousedown: 选中 + 拖动
+        wrap.addEventListener('mousedown', function(e) {
+            if (e.target === resizer) return;
+
+            var isSelected = wrap.classList.contains('selected');
+            var isInner = (e.target === inner || inner.contains(e.target));
+
+            // 已选中 + 点击内部（且当前正在编辑）：让浏览器处理
+            if (isSelected && isInner && document.activeElement === inner) {
                 return;
             }
-            pagesContainer.style.transform = 'scale(' + currentZoom + ')';
-            document.getElementById('zoomDisplay').textContent = Math.round(currentZoom * 100) + '%';
-        }
-        document.getElementById('zoomIn').addEventListener('click', function() { currentZoom = Math.min(2.0, currentZoom + 0.1); applyZoom(); });
-        document.getElementById('zoomOut').addEventListener('click', function() { currentZoom = Math.max(0.5, currentZoom - 0.1); applyZoom(); });
-        document.getElementById('zoomReset').addEventListener('click', function() { currentZoom = 1.0; applyZoom(); });
-        window.addEventListener('resize', function() { applyZoom(); });
-
-        // ============ 快捷键 ============
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey || e.metaKey) {
-                if (e.key === 'b') { e.preventDefault(); exec('bold'); }
-                if (e.key === 'i') { e.preventDefault(); exec('italic'); }
-                if (e.key === 'u') { e.preventDefault(); exec('underline'); }
-                if (e.key === 'z' && !e.shiftKey) { e.preventDefault(); exec('undo'); }
-                if (e.key === 'y' || (e.key === 'z' && e.shiftKey)) { e.preventDefault(); exec('redo'); }
-                if (e.key === 'f') { e.preventDefault(); document.getElementById('findMenuBtn').click(); }
-                if (e.key === 's') { e.preventDefault(); newSaveBtn.click(); }
+            // 已选中 + 点击内部：进入编辑状态
+            if (isSelected && isInner) {
+                return;
             }
-            if (e.key === 'Escape') hideAllPanels();
-        });
 
-        // ============ 关闭提示 ============
-        window.addEventListener('beforeunload', function(e) {
-            var allText = '';
-            getAllPages().forEach(function(p) { allText += p.innerText || ''; });
-            if (!allText.trim()) return;
-            if (isHandlingUnload) return;
             e.preventDefault();
-            e.returnValue = '您有未下载的文档。是否保存并退出？';
-            return e.returnValue;
-        });
-        window.addEventListener('unload', function() {
-            var allText = '';
-            getAllPages().forEach(function(p) { allText += p.innerText || ''; });
-            if (allText.trim() !== '' && !isHandlingUnload) {
-                try { downloadDocx(); } catch (err) {}
-                try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
-            }
+            e.stopPropagation();
+
+            selectTextbox(wrap);
+            startTextBoxDrag(e, wrap);
         });
 
-        // 初始化
-        setTimeout(function() { applyZoom(); updateCount(); }, 100);
-    })();
-    </script>
+        // Resizer
+        function startResize(e) {
+            if (e.target !== resizer) return;
+            e.preventDefault();
+            e.stopPropagation();
+            startTextBoxResize(e, wrap);
+        }
+
+        resizer.addEventListener('mousedown', startResize);
+        resizer.addEventListener('touchstart', startResize, { passive: false });
+
+        // 双击进入编辑
+        wrap.addEventListener('dblclick', function(e) {
+            if (e.target === resizer) return;
+            e.preventDefault();
+            e.stopPropagation();
+            selectTextbox(wrap);
+            inner.focus();
+            var range = document.createRange();
+            range.selectNodeContents(inner);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        });
+
+        // 编辑时保存
+        inner.addEventListener('input', function() {
+            autoSave();
+            checkOverflow();
+            updateCurrentThumb();
+        });
+    }
+
+    function selectTextbox(wrap) {
+        hideAllToolbars();
+        wrap.classList.add('selected');
+        showTextBoxToolbar(wrap);
+    }
+
+    function startTextBoxDrag(e, wrap) {
+        var point = e.touches ? e.touches[0] : e;
+        var startX = point.clientX;
+        var startY = point.clientY;
+        var startLeft = parseInt(wrap.style.left) || 0;
+        var startTop = parseInt(wrap.style.top) || 0;
+        var moved = false;
+
+        function onMove(ev) {
+            var p = ev.touches ? ev.touches[0] : ev;
+            var dx = (p.clientX - startX) / currentScale;
+            var dy = (p.clientY - startY) / currentScale;
+            if (Math.abs(dx) > 2 || Math.abs(dy) > 2) moved = true;
+
+            var newLeft = startLeft + dx;
+            var newTop = startTop + dy;
+
+            // 限制在画布范围内
+            var w = wrap.offsetWidth;
+            var h = wrap.offsetHeight;
+            var maxLeft = canvas.clientWidth - 80 - w;
+            var maxTop = canvas.clientHeight - 80 - h;
+            newLeft = Math.max(0, Math.min(maxLeft, newLeft));
+            newTop = Math.max(0, Math.min(maxTop, newTop));
+
+            wrap.style.left = newLeft + 'px';
+            wrap.style.top = newTop + 'px';
+        }
+
+        function onUp() {
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onUp);
+            document.removeEventListener('touchmove', onMove);
+            document.removeEventListener('touchend', onUp);
+            document.removeEventListener('touchcancel', onUp);
+            if (moved) {
+                autoSave();
+                checkOverflow();
+                updateCurrentThumb();
+            }
+        }
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onUp);
+        document.addEventListener('touchcancel', onUp);
+    }
+
+    function startTextBoxResize(e, wrap) {
+        var point = e.touches ? e.touches[0] : e;
+        var startX = point.clientX;
+        var startW = wrap.offsetWidth;
+        var maxW = canvas.clientWidth - 80 - (parseInt(wrap.style.left) || 0);
+
+        function onMove(ev) {
+            var p = ev.touches ? ev.touches[0] : ev;
+            var dx = (p.clientX - startX) / currentScale;
+            var newW = Math.max(120, Math.min(maxW, startW + dx));
+            wrap.style.width = newW + 'px';
+        }
+
+        function onUp() {
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onUp);
+            document.removeEventListener('touchmove', onMove);
+            document.removeEventListener('touchend', onUp);
+            document.removeEventListener('touchcancel', onUp);
+            autoSave();
+            checkOverflow();
+            updateCurrentThumb();
+            if (wrap.parentNode) showTextBoxToolbar(wrap);
+        }
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onUp);
+        document.addEventListener('touchcancel', onUp);
+    }
+
+    function showTextBoxToolbar(wrap) {
+        hideTextBoxToolbar();
+        hideImgToolbar();
+
+        textBoxToolbar = document.createElement('div');
+        textBoxToolbar.className = 'img-toolbar';
+        textBoxToolbar.innerHTML =
+            '<button data-act="front">置顶</button>' +
+            '<button data-act="delete" class="danger">删除文本框</button>';
+        document.body.appendChild(textBoxToolbar);
+
+        var rect = wrap.getBoundingClientRect();
+        var toolbarW = textBoxToolbar.offsetWidth || 200;
+        var left = rect.left + rect.width / 2 - toolbarW / 2;
+        var top = rect.top - 42;
+        if (left < 8) left = 8;
+        if (top < 8) top = rect.bottom + 8;
+        textBoxToolbar.style.left = left + 'px';
+        textBoxToolbar.style.top = top + 'px';
+
+        textBoxToolbar.addEventListener('click', function(e) {
+            var act = e.target.getAttribute('data-act');
+            if (!act) return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (act === 'delete') {
+                wrap.remove();
+                hideTextBoxToolbar();
+                autoSave();
+                checkOverflow();
+                updateCurrentThumb();
+            } else if (act === 'front') {
+                // 置顶：把 z-index 提高到最大值
+                var maxZ = 2;
+                canvas.querySelectorAll('.text-box-wrap').forEach(function(w) {
+                    var z = parseInt(w.style.zIndex || 2);
+                    if (z > maxZ) maxZ = z;
+                });
+                wrap.style.zIndex = maxZ + 1;
+                autoSave();
+                showTextBoxToolbar(wrap);
+            }
+        });
+    }
+
+    function hideTextBoxToolbar() {
+        if (textBoxToolbar && textBoxToolbar.parentNode) {
+            textBoxToolbar.parentNode.removeChild(textBoxToolbar);
+        }
+        textBoxToolbar = null;
+    }
+
+    // ============ 图片插入 ============
+    $('insertImageBtn').addEventListener('click', function() { imageInput.click(); });
+
+    imageInput.addEventListener('change', function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+            var imgId = 'img_' + Date.now();
+            var html = '<span class="img-wrap" contenteditable="false" data-img-id="' + imgId + '" style="width:400px;">' +
+                       '<img src="' + ev.target.result + '" alt="图片">' +
+                       '<span class="img-resizer" data-resizer="' + imgId + '"></span>' +
+                       '</span>&nbsp;';
+            execCmd('insertHTML', html);
+        };
+        reader.readAsDataURL(file);
+        imageInput.value = '';
+    });
+
+    // ============ 图片选中与控制栏 ============
+    function showImgToolbar(wrap) {
+        hideImgToolbar();
+        hideTextBoxToolbar();
+        imgToolbar = document.createElement('div');
+        imgToolbar.className = 'img-toolbar';
+        imgToolbar.innerHTML =
+            '<button data-act="smaller">缩小</button>' +
+            '<button data-act="larger">放大</button>' +
+            '<button data-act="reset">原始</button>' +
+            '<button data-act="fit">适应宽度</button>' +
+            '<button data-act="delete" class="danger">删除</button>';
+        document.body.appendChild(imgToolbar);
+
+        var rect = wrap.getBoundingClientRect();
+        var toolbarW = imgToolbar.offsetWidth || 260;
+        var left = rect.left + rect.width / 2 - toolbarW / 2;
+        var top = rect.top - 42;
+        if (left < 8) left = 8;
+        if (top < 8) top = rect.bottom + 8;
+        imgToolbar.style.left = left + 'px';
+        imgToolbar.style.top = top + 'px';
+
+        imgToolbar.addEventListener('click', function(e) {
+            var act = e.target.getAttribute('data-act');
+            if (!act) return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            var img = wrap.querySelector('img');
+            if (!img) return;
+
+            var curW = wrap.offsetWidth;
+            var maxW = canvas.clientWidth - 80;
+
+            if (act === 'smaller') {
+                wrap.style.width = Math.max(40, curW * 0.8) + 'px';
+            } else if (act === 'larger') {
+                wrap.style.width = Math.min(maxW, curW * 1.25) + 'px';
+            } else if (act === 'reset') {
+                wrap.style.width = '400px';
+            } else if (act === 'fit') {
+                wrap.style.width = maxW + 'px';
+            } else if (act === 'delete') {
+                wrap.remove();
+                hideImgToolbar();
+            }
+
+            autoSave();
+            checkOverflow();
+            updateCurrentThumb();
+            if (wrap.parentNode) {
+                setTimeout(function() { if (wrap.parentNode) showImgToolbar(wrap); }, 30);
+            }
+        });
+    }
+
+    function hideImgToolbar() {
+        if (imgToolbar && imgToolbar.parentNode) {
+            imgToolbar.parentNode.removeChild(imgToolbar);
+        }
+        imgToolbar = null;
+    }
+
+    // 画布点击：处理图片选中；文本框内部已经自己处理
+    canvas.addEventListener('click', function(e) {
+        if (e.target.closest && e.target.closest('.text-box-wrap')) {
+            return;
+        }
+        var imgWrap = e.target.closest ? e.target.closest('.img-wrap') : null;
+
+        canvas.querySelectorAll('.img-wrap.selected, .text-box-wrap.selected').forEach(function(w) {
+            w.classList.remove('selected');
+        });
+
+        if (imgWrap) {
+            imgWrap.classList.add('selected');
+            showImgToolbar(imgWrap);
+            hideTextBoxToolbar();
+        } else {
+            hideImgToolbar();
+            hideTextBoxToolbar();
+        }
+    });
+
+    // 点击画布外部清除选中
+    document.addEventListener('click', function(e) {
+        if (!imgToolbar && !textBoxToolbar) return;
+        if ((imgToolbar && imgToolbar.contains(e.target)) || (textBoxToolbar && textBoxToolbar.contains(e.target))) return;
+        if (e.target.closest && (e.target.closest('.img-wrap') || e.target.closest('.text-box-wrap'))) return;
+
+        canvas.querySelectorAll('.img-wrap.selected, .text-box-wrap.selected').forEach(function(w) {
+            w.classList.remove('selected');
+        });
+        hideImgToolbar();
+        hideTextBoxToolbar();
+    });
+
+    canvasWrapper.addEventListener('scroll', function() { hideImgToolbar(); hideTextBoxToolbar(); }, true);
+    window.addEventListener('resize', function() { hideImgToolbar(); hideTextBoxToolbar(); });
+    window.addEventListener('scroll', function() { hideImgToolbar(); hideTextBoxToolbar(); }, true);
+
+    // 图片拖拽
+    function startResize(e) {
+        var target = e.target;
+        if (!target.classList || !target.classList.contains('img-resizer')) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var wrap = target.parentElement;
+        var img = wrap.querySelector('img');
+        if (!img) return;
+
+        var point = e.touches ? e.touches[0] : e;
+        var startX = point.clientX;
+        var startW = wrap.offsetWidth;
+        var maxW = canvas.clientWidth - 80;
+
+        function onMove(ev) {
+            ev.preventDefault();
+            var p = ev.touches ? ev.touches[0] : ev;
+            var dx = (p.clientX - startX) / currentScale;
+            var newW = Math.max(40, Math.min(maxW, startW + dx));
+            wrap.style.width = newW + 'px';
+        }
+
+        function onUp() {
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onUp);
+            document.removeEventListener('touchmove', onMove);
+            document.removeEventListener('touchend', onUp);
+            document.removeEventListener('touchcancel', onUp);
+            autoSave();
+            checkOverflow();
+            updateCurrentThumb();
+            if (wrap.parentNode) showImgToolbar(wrap);
+        }
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onUp);
+        document.addEventListener('touchcancel', onUp);
+    }
+
+    document.addEventListener('mousedown', startResize);
+    document.addEventListener('touchstart', startResize, { passive: false });
+
+    canvas.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'IMG') e.preventDefault();
+    });
+
+    canvas.addEventListener('beforeinput', function(e) {
+        if (e.target.tagName === 'IMG') e.preventDefault();
+    });
+
+    // 其他插入
+    $('shapeSel').addEventListener('change', function() {
+        var shape = this.value;
+        if (!shape) return;
+        var html = '';
+        if (shape === 'rect') html = '<div class="shape-rect" contenteditable="false"></div>&nbsp;';
+        else if (shape === 'circle') html = '<div class="shape-circle" contenteditable="false"></div>&nbsp;';
+        else if (shape === 'arrow') html = '<div class="shape-arrow" contenteditable="false"></div>&nbsp;';
+        else if (shape === 'hr') html = '<hr>';
+        execCmd('insertHTML', html);
+        this.value = '';
+    });
+
+    $('addSlideBtn').addEventListener('click', addSlide);
+    $('deleteSlideBtn').addEventListener('click', deleteSlide);
+    $('duplicateBtn').addEventListener('click', duplicateSlide);
+    $('moveUpBtn').addEventListener('click', moveSlideUp);
+    $('moveDownBtn').addEventListener('click', moveSlideDown);
+
+    canvas.addEventListener('input', function(e) {
+        // 如果是在 text-box-inner 内输入，已经在内部监听了
+        if (e.target.classList && e.target.classList.contains('text-box-inner')) return;
+        autoSave();
+        updateInfo();
+        checkOverflow();
+    });
+
+    // ============ 预览 ============
+    function updatePreviewSlide() {
+        var s = slides[previewIndex];
+        if (!s) return;
+        previewSlide.style.backgroundColor = s.bg || '#ffffff';
+        previewSlideInner.innerHTML = cleanHtmlForDisplay(s.html);
+        previewPageInfo.textContent = (previewIndex + 1) + ' / ' + slides.length;
+
+        var availW = previewStage.clientWidth - 40;
+        var availH = previewStage.clientHeight - 40;
+        var scale = Math.min(availW / SLIDE_W, availH / SLIDE_H);
+        if (scale > 1) scale = 1;
+
+        previewSlide.style.width = (SLIDE_W * scale) + 'px';
+        previewSlide.style.height = (SLIDE_H * scale) + 'px';
+        previewSlideInner.style.transform = 'scale(' + scale + ')';
+    }
+
+    function openPreview() {
+        hideAllToolbars();
+        syncCanvasToData();
+        previewIndex = currentIndex;
+        previewOverlay.classList.add('active');
+        updatePreviewSlide();
+    }
+
+    function closePreview() {
+        previewOverlay.classList.remove('active');
+    }
+
+    $('previewBtn').addEventListener('click', openPreview);
+    $('previewClose').addEventListener('click', closePreview);
+    $('previewPrev').addEventListener('click', function() { if (previewIndex > 0) { previewIndex--; updatePreviewSlide(); } });
+    $('previewNext').addEventListener('click', function() { if (previewIndex < slides.length - 1) { previewIndex++; updatePreviewSlide(); } });
+
+    document.addEventListener('keydown', function(e) {
+        if (previewOverlay.classList.contains('active')) {
+            if (e.key === 'Escape') { e.preventDefault(); closePreview(); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); if (previewIndex > 0) { previewIndex--; updatePreviewSlide(); } }
+            if (e.key === 'ArrowRight') { e.preventDefault(); if (previewIndex < slides.length - 1) { previewIndex++; updatePreviewSlide(); } }
+            if (e.key === ' ') { e.preventDefault(); if (previewIndex < slides.length - 1) { previewIndex++; updatePreviewSlide(); } }
+        }
+    });
+
+    // ============ 导出 PPTX ============
+    async function exportPptx() {
+        if (typeof PptxGenJS === 'undefined') { alert('PptxGenJS 库未加载'); return; }
+        if (typeof html2canvas === 'undefined') { alert('html2canvas 库未加载'); return; }
+
+        hideAllToolbars();
+        syncCanvasToData();
+        statusText.textContent = '正在生成 PPTX…';
+        statusDot.className = 'status-dot saving';
+        exportBtn.disabled = true;
+
+        try {
+            var pptx = new PptxGenJS();
+            pptx.layout = 'LAYOUT_16x9';
+
+            for (var i = 0; i < slides.length; i++) {
+                var s = slides[i];
+                var temp = document.createElement('div');
+                temp.className = 'readonly-mode';
+                temp.style.cssText =
+                    'position:fixed;left:-9999px;top:0;' +
+                    'width:' + SLIDE_W + 'px;height:' + SLIDE_H + 'px;' +
+                    'background:' + (s.bg || '#ffffff') + ';' +
+                    'padding:40px;' +
+                    'font-family:"Segoe UI","Microsoft YaHei",Arial,sans-serif;' +
+                    'font-size:16px;line-height:1.8;color:#1a202c;' +
+                    'box-sizing:border-box;overflow:hidden;' +
+                    'word-wrap:break-word;overflow-wrap:break-word;' +
+                    'position:relative;';
+                temp.innerHTML = cleanHtmlForDisplay(s.html);
+                document.body.appendChild(temp);
+
+                var canvasImg = await html2canvas(temp, {
+                    scale: 2,
+                    backgroundColor: s.bg || '#ffffff',
+                    useCORS: true,
+                    logging: false
+                });
+
+                document.body.removeChild(temp);
+
+                var imgData = canvasImg.toDataURL('image/png');
+
+                var slide = pptx.addSlide();
+                slide.background = { color: (s.bg || '#ffffff').replace('#', '') };
+                slide.addImage({ data: imgData, x: 0, y: 0, w: 10, h: 5.625 });
+
+                statusText.textContent = '正在生成第 ' + (i + 1) + '/' + slides.length + ' 页…';
+                await new Promise(function(r) { setTimeout(r, 10); });
+            }
+
+            await pptx.writeFile({ fileName: 'Nortbook_Presentation.pptx' });
+            statusText.textContent = '✓ 已导出 PPTX';
+            statusDot.className = 'status-dot';
+        } catch (err) {
+            console.error('导出失败', err);
+            alert('导出失败：' + err.message);
+            statusText.textContent = '导出失败';
+            statusDot.className = 'status-dot error';
+        } finally {
+            exportBtn.disabled = false;
+        }
+    }
+
+    exportBtn.addEventListener('click', exportPptx);
+
+    // ============ 导入 JSON ============
+    $('importBtn').addEventListener('click', function() { importInput.click(); });
+
+    importInput.addEventListener('change', function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+            try {
+                var data = JSON.parse(ev.target.result);
+                var importedSlides = null;
+                if (data && Array.isArray(data.slides)) importedSlides = data.slides;
+                else if (Array.isArray(data)) importedSlides = data;
+
+                if (!importedSlides || importedSlides.length === 0) { alert('备份文件格式不正确'); return; }
+
+                var valid = importedSlides.filter(function(s) { return s && s.id && typeof s.html === 'string'; });
+                if (valid.length === 0) { alert('备份中未找到有效的幻灯片'); return; }
+
+                if (!confirm('找到 ' + valid.length + ' 张幻灯片。\n点击「确定」将覆盖现有内容，点击「取消」返回。')) return;
+
+                slides = valid;
+                currentIndex = 0;
+                saveData();
+                renderThumbnails();
+                goToSlide(0);
+                statusText.textContent = '已导入 ' + valid.length + ' 页';
+                statusDot.className = 'status-dot';
+            } catch (err) { alert('导入失败：' + err.message); }
+        };
+        reader.readAsText(file);
+        importInput.value = '';
+    });
+
+    // ============ 快捷键 ============
+    document.addEventListener('keydown', function(e) {
+        if (previewOverlay.classList.contains('active')) return;
+
+        // 正在文本框内编辑文字时，不删除整个文本框
+        var isEditingText = document.activeElement && document.activeElement.classList && document.activeElement.classList.contains('text-box-inner');
+
+        if ((e.key === 'Delete' || e.key === 'Backspace') && !isEditingText) {
+            var selImg = canvas.querySelector('.img-wrap.selected');
+            var selText = canvas.querySelector('.text-box-wrap.selected');
+
+            if (selImg) {
+                e.preventDefault();
+                selImg.remove();
+                hideImgToolbar();
+                autoSave();
+                checkOverflow();
+                updateCurrentThumb();
+                return;
+            }
+            if (selText) {
+                e.preventDefault();
+                selText.remove();
+                hideTextBoxToolbar();
+                autoSave();
+                checkOverflow();
+                updateCurrentThumb();
+                return;
+            }
+        }
+
+        if (e.ctrlKey || e.metaKey) {
+            if (e.key === 'b') { e.preventDefault(); execCmd('bold'); }
+            if (e.key === 'i') { e.preventDefault(); execCmd('italic'); }
+            if (e.key === 'u') { e.preventDefault(); execCmd('underline'); }
+            if (e.key === 'z' && !e.shiftKey) { e.preventDefault(); execCmd('undo'); }
+            if (e.key === 'y' || (e.key === 'z' && e.shiftKey)) { e.preventDefault(); execCmd('redo'); }
+            if (e.key === 's') { e.preventDefault(); exportPptx(); }
+        }
+    });
+
+    window.addEventListener('resize', function() {
+        updateCanvasScale();
+        slideList.querySelectorAll('.slide-thumb').forEach(updateThumbScale);
+        if (previewOverlay.classList.contains('active')) updatePreviewSlide();
+    });
+
+    window.addEventListener('beforeunload', function() {
+        syncCanvasToData();
+        saveData();
+    });
+
+    function init() {
+        loadData();
+        renderThumbnails();
+        goToSlide(currentIndex);
+
+        setTimeout(function() {
+            updateCanvasScale();
+            slideList.querySelectorAll('.slide-thumb').forEach(updateThumbScale);
+        }, 50);
+
+        if (typeof ResizeObserver !== 'undefined') {
+            var ro = new ResizeObserver(function() {
+                updateCanvasScale();
+                slideList.querySelectorAll('.slide-thumb').forEach(updateThumbScale);
+            });
+            ro.observe(canvasWrapper);
+            ro.observe(slideList);
+        }
+    }
+
+    init();
+})();
+</script>
 </body>
 </html>
